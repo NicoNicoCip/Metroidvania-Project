@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cyo12li7o2xfx"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="TBLoader" type="TBLoader" parent="."]
+map_resource = "res://Game/Models/Crates n stuff.map"
+map_inverse_scale = 32
+option_filter_nearest = true
+entity_path = "res://Game/Entities"
+texture_path = "res://Game/HL_Textures"

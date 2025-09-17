@@ -1,0 +1,12 @@
+newmtl -3SILO2_P2B
+map_Kd 
+
+newmtl -4SILO2_PAN2
+map_Kd 
+
+newmtl BABTECH_BORDL7
+map_Kd 
+
+newmtl {CHAINLINK
+map_Kd 
+

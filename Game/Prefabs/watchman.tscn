@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0rp2ll1q34jx"]
+
+[ext_resource type="ArrayMesh" uid="uid://dlvg6ujbmpl20" path="res://Game/Models/Watchman.obj" id="1_68aek"]
+
+[node name="Watchman" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = ExtResource("1_68aek")
+skeleton = NodePath("../../Map/R1/region/Lift/Sounds")

@@ -1,0 +1,80 @@
+[gd_scene load_steps=11 format=3 uid="uid://xptaopltyojd"]
+
+[ext_resource type="Texture2D" uid="uid://d11f15cny6pou" path="res://Game/HL_Textures/bcrate06.png" id="1_n2oyx"]
+[ext_resource type="Texture2D" uid="uid://clojvy65mth43" path="res://Game/HL_Textures/bcrate03.png" id="2_uxwg8"]
+[ext_resource type="Texture2D" uid="uid://boi8legy6ih8e" path="res://Game/HL_Textures/bcrate02.png" id="3_8ei4c"]
+[ext_resource type="Texture2D" uid="uid://cxn2ohf5kkujs" path="res://Game/HL_Textures/crate08b.png" id="4_n8vip"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5gd3e"]
+albedo_texture = ExtResource("1_n2oyx")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2qu5"]
+albedo_texture = ExtResource("2_uxwg8")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xktj1"]
+albedo_texture = ExtResource("3_8ei4c")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6y5lw"]
+albedo_texture = ExtResource("4_n8vip")
+texture_filter = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_jglod"]
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2.00001, 2),
+"attribute_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0),
+"format": 4119,
+"index_count": 12,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0),
+"material": SubResource("StandardMaterial3D_5gd3e"),
+"primitive": 3,
+"vertex_count": 8,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191)
+}, {
+"aabb": AABB(-1, -1, -1, 2, 2.00001, 2),
+"attribute_data": PackedByteArray(0, 0, 224, 64, 0, 0, 128, 191, 0, 0, 0, 65, 0, 0, 128, 191, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 224, 64, 0, 0, 0, 0, 0, 0, 224, 192, 0, 0, 128, 191, 0, 0, 224, 192, 0, 0, 0, 0, 0, 0, 0, 193, 0, 0, 0, 0, 0, 0, 0, 193, 0, 0, 128, 191),
+"format": 4119,
+"index_count": 12,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0),
+"material": SubResource("StandardMaterial3D_h2qu5"),
+"primitive": 3,
+"vertex_count": 8,
+"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 255, 255, 127, 255, 255, 255, 255)
+}, {
+"aabb": AABB(-1, -1, -1, 2.00001, 1.00136e-05, 2),
+"attribute_data": PackedByteArray(0, 0, 224, 192, 0, 0, 0, 0, 0, 0, 224, 192, 0, 0, 128, 63, 0, 0, 0, 193, 0, 0, 128, 63, 0, 0, 0, 193, 0, 0, 0, 0),
+"format": 4119,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0),
+"material": SubResource("StandardMaterial3D_xktj1"),
+"primitive": 3,
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 0, 0, 255, 255, 255, 255)
+}, {
+"aabb": AABB(-1, 1, -1, 2.00001, 1.00136e-05, 2),
+"attribute_data": PackedByteArray(0, 0, 16, 65, 0, 0, 0, 0, 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 32, 65, 255, 255, 127, 63, 0, 0, 16, 65, 255, 255, 127, 63),
+"format": 4119,
+"index_count": 6,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0),
+"material": SubResource("StandardMaterial3D_6y5lw"),
+"primitive": 3,
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 255, 127, 255, 255, 255, 127, 255, 191)
+}]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kkrwh"]
+data = PackedVector3Array(-1, 1, -1, -1, -1, -1, 1, -1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1)
+
+[node name="Crate on a pellet with chains" type="Node3D"]
+
+[node name="entity_5_geometry" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("ArrayMesh_jglod")
+
+[node name="entity_5_geometry_col" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity_5_geometry_col"]
+shape = SubResource("ConcavePolygonShape3D_kkrwh")
