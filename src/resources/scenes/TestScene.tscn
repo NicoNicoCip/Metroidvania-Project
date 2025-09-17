@@ -1,0 +1,297 @@
+[gd_scene load_steps=9 format=3 uid="uid://csjteo4ahrgpi"]
+
+[ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_hduqo"]
+[ext_resource type="Script" uid="uid://dudkfw0wgly0d" path="res://src/main/core/world/Master.cs" id="1_hrt0i"]
+[ext_resource type="Script" uid="uid://c124u4dnejjmn" path="res://src/main/core/world/GeometryLoader.cs" id="2_b74ru"]
+[ext_resource type="Script" uid="uid://dmaweb18plfhq" path="res://src/main/core/world/RegionData.cs" id="3_gk2dh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_40isa"]
+size = Vector3(32, 32, 32)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3bb3c"]
+size = Vector2(32, 32)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ht12c"]
+friction = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r5gi8"]
+size = Vector3(32, 0, 32)
+
+[node name="TestScene" type="Node3D"]
+script = ExtResource("1_hrt0i")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 230.0
+
+[node name="Player" parent="." instance=ExtResource("1_hduqo")]
+
+[node name="Regions" type="Node3D" parent="."]
+
+[node name="GeometryLoader" type="Node3D" parent="Regions" node_paths=PackedStringArray("player")]
+script = ExtResource("2_b74ru")
+player = NodePath("../../Player")
+
+[node name="a1" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a2"), NodePath("../a4"), NodePath("../a6"), NodePath("../a8")]
+
+[node name="Area" type="Area3D" parent="Regions/a1"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a1/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a1"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a1/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a1/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a1/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a1/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a1/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a2" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a3"), NodePath("../a1"), NodePath("../a9")]
+
+[node name="Area" type="Area3D" parent="Regions/a2"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a2/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a2"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a2/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a2/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a2/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a2/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a2/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a3" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a2"), NodePath("../a4")]
+
+[node name="Area" type="Area3D" parent="Regions/a3"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a3/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a3"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a3/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a3/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a3/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a3/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a3/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a4" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a3"), NodePath("../a1"), NodePath("../a5")]
+
+[node name="Area" type="Area3D" parent="Regions/a4"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a4/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a4"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a4/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a4/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a4/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a4/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a4/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a5" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a4"), NodePath("../a6")]
+
+[node name="Area" type="Area3D" parent="Regions/a5"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a5/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a5"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a5/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a5/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a5/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a5/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a5/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a6" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a5"), NodePath("../a1"), NodePath("../a7")]
+
+[node name="Area" type="Area3D" parent="Regions/a6"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a6/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a6"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a6/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a6/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a6/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a6/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a6/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a7" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a6"), NodePath("../a8")]
+
+[node name="Area" type="Area3D" parent="Regions/a7"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a7/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a7"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a7/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a7/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a7/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a7/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a7/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a8" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a7"), NodePath("../a1"), NodePath("../a9")]
+
+[node name="Area" type="Area3D" parent="Regions/a8"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a8/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a8"]
+
+[node name="Meshes" type="Node3D" parent="Regions/a8/region"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a8/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a8/region"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a8/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a8/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")
+
+[node name="a9" type="Node3D" parent="Regions" node_paths=PackedStringArray("region", "AdjacentRooms")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
+script = ExtResource("3_gk2dh")
+region = NodePath("region")
+AdjacentRooms = [NodePath("../a8"), NodePath("../a2")]
+
+[node name="Area" type="Area3D" parent="Regions/a9"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a9/Area"]
+shape = SubResource("BoxShape3D_40isa")
+
+[node name="region" type="Node3D" parent="Regions/a9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
+
+[node name="Meshes" type="Node3D" parent="Regions/a9/region"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Regions/a9/region/Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("PlaneMesh_3bb3c")
+
+[node name="Colliders" type="Node3D" parent="Regions/a9/region"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Regions/a9/region/Colliders"]
+physics_material_override = SubResource("PhysicsMaterial_ht12c")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Regions/a9/region/Colliders/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_r5gi8")

@@ -1,1 +1,0 @@
-Thanks to Karen Laur and Valve for making HalfLife and the textures for this game.

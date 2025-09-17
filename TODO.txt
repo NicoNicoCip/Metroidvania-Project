@@ -1,0 +1,6 @@
+1. Reorganize the project files
+2. Document all the code
+3. Fix the scene tree
+4. Fix sound crackling
+5. Fix animated platforms not moving the player as well.
+6. Fix region system using Node3D instead of FUCKING RegionDada. FUUUUCK.
