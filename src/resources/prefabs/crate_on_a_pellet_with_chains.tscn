@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://xptaopltyojd"]
+[gd_scene load_steps=11 format=4 uid="uid://xptaopltyojd"]
 
 [ext_resource type="Texture2D" uid="uid://d11f15cny6pou" path="res://HL_Textures/bcrate06.png" id="1_n2oyx"]
 [ext_resource type="Texture2D" uid="uid://clojvy65mth43" path="res://HL_Textures/bcrate03.png" id="2_uxwg8"]
@@ -24,44 +24,48 @@ texture_filter = 0
 [sub_resource type="ArrayMesh" id="ArrayMesh_jglod"]
 _surfaces = [{
 "aabb": AABB(-1, -1, -1, 2, 2.00001, 2),
-"attribute_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 191, 0, 0, 0, 0),
-"format": 4119,
+"attribute_data": PackedByteArray("AACAPwAAgL8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAgL8AAIC/AACAvwAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAA=="),
+"format": 34359742487,
 "index_count": 12,
-"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0),
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcA"),
 "material": SubResource("StandardMaterial3D_5gd3e"),
 "primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 8,
-"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 255, 0, 0, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 255, 127, 255, 255, 255, 191)
+"vertex_data": PackedByteArray("AACAvwAAgD8AAIC/AACAvwAAgL8AAIC/AACAPwAAgL8AAIC/AACAPwAAgD8AAIC/AACAvwAAgD8AAIA/AACAPwAAgD8AAIA/AACAPwAAgL8AAIA/AACAvwAAgL8AAIA//////wAA/7//////AAD/v/////8AAP+//////wAA/7//f/9/////v/9//3////+//3//f////7//f/9/////vw==")
 }, {
 "aabb": AABB(-1, -1, -1, 2, 2.00001, 2),
-"attribute_data": PackedByteArray(0, 0, 224, 64, 0, 0, 128, 191, 0, 0, 0, 65, 0, 0, 128, 191, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 224, 64, 0, 0, 0, 0, 0, 0, 224, 192, 0, 0, 128, 191, 0, 0, 224, 192, 0, 0, 0, 0, 0, 0, 0, 193, 0, 0, 0, 0, 0, 0, 0, 193, 0, 0, 128, 191),
-"format": 4119,
+"attribute_data": PackedByteArray("AADgQAAAgL8AAABBAACAvwAAAEEAAAAAAADgQAAAAAAAAODAAACAvwAA4MAAAAAAAAAAwQAAAAAAAADBAACAvw=="),
+"format": 34359742487,
 "index_count": 12,
-"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0),
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcA"),
 "material": SubResource("StandardMaterial3D_h2qu5"),
 "primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 8,
-"vertex_data": PackedByteArray(0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 255, 127, 255, 127, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 255, 255, 127, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 255, 255, 127, 255, 255, 255, 255)
+"vertex_data": PackedByteArray("AACAvwAAgD8AAIC/AACAvwAAgD8AAIA/AACAvwAAgL8AAIA/AACAvwAAgL8AAIC/AACAPwAAgD8AAIC/AACAPwAAgL8AAIC/AACAPwAAgL8AAIA/AACAPwAAgD8AAIA/AAD/f/9//78AAP9//3//vwAA/3//f/+/AAD/f/9//7////9//////////3//////////f/////////9//////w==")
 }, {
 "aabb": AABB(-1, -1, -1, 2.00001, 1.00136e-05, 2),
-"attribute_data": PackedByteArray(0, 0, 224, 192, 0, 0, 0, 0, 0, 0, 224, 192, 0, 0, 128, 63, 0, 0, 0, 193, 0, 0, 128, 63, 0, 0, 0, 193, 0, 0, 0, 0),
-"format": 4119,
+"attribute_data": PackedByteArray("AADgwAAAAAAAAODAAACAPwAAAMEAAIA/AAAAwQAAAAA="),
+"format": 34359742487,
 "index_count": 6,
-"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0),
+"index_data": PackedByteArray("AAABAAIAAAACAAMA"),
 "material": SubResource("StandardMaterial3D_xktj1"),
 "primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 191, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 191, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 0, 0, 255, 255, 255, 255, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 128, 63, 255, 127, 0, 0, 255, 255, 255, 255)
+"vertex_data": PackedByteArray("AACAPwAAgL8AAIC/AACAvwAAgL8AAIC/AACAvwAAgL8AAIA/AACAPwAAgL8AAIA//38AAP//////fwAA//////9/AAD//////38AAP////8=")
 }, {
 "aabb": AABB(-1, 1, -1, 2.00001, 1.00136e-05, 2),
-"attribute_data": PackedByteArray(0, 0, 16, 65, 0, 0, 0, 0, 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 32, 65, 255, 255, 127, 63, 0, 0, 16, 65, 255, 255, 127, 63),
-"format": 4119,
+"attribute_data": PackedByteArray("AAAQQQAAAAAAACBBAAAAAAAAIEH//38/AAAQQf//fz8="),
+"format": 34359742487,
 "index_count": 6,
-"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0),
+"index_data": PackedByteArray("AAABAAIAAAACAAMA"),
 "material": SubResource("StandardMaterial3D_6y5lw"),
 "primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 4,
-"vertex_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 191, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 63, 255, 127, 255, 255, 255, 127, 255, 191, 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 128, 191, 255, 127, 255, 255, 255, 127, 255, 191)
+"vertex_data": PackedByteArray("AACAPwAAgD8AAIC/AACAPwAAgD8AAIA/AACAvwAAgD8AAIA/AACAvwAAgD8AAIC//3////9//7//f////3//v/9/////f/+//3////9//78=")
 }]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_kkrwh"]

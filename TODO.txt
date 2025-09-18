@@ -1,4 +1,4 @@
-1. Reorganize the project files
+	(done)	1. Reorganize the project files
 2. Document all the code
 3. Fix the scene tree
 4. Fix sound crackling
