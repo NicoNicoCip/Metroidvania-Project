@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=4 uid="uid://m31c7k1r881f"]
+
+[ext_resource type="Texture2D" uid="uid://cpwqlcb0xyrdq" path="res://HL_Textures/fiftsfile2b.png" id="1_8c85j"]
+[ext_resource type="Texture2D" uid="uid://ffiqov4hihu5" path="res://HL_Textures/fiftsfile2.png" id="2_vqbjn"]
+[ext_resource type="Texture2D" uid="uid://b3dwhukvaoao3" path="res://HL_Textures/FIFTSFILE3.png" id="3_pv182"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wp5wq"]
+albedo_texture = ExtResource("1_8c85j")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ywf4"]
+albedo_texture = ExtResource("2_vqbjn")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nqou2"]
+albedo_texture = ExtResource("3_pv182")
+texture_filter = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hjv27"]
+_surfaces = [{
+"aabb": AABB(-0.5, -1.25, -0.5, 1, 2.5, 1),
+"attribute_data": PackedByteArray("AACgQAAAgEAAAKBAAACgQAAAgEAAAKBAAACAQAAAgEAAAKDAAACAQAAAgMAAAIBAAACAwAAAoEAAAKDAAACgQA=="),
+"format": 34359742487,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcA"),
+"material": SubResource("StandardMaterial3D_wp5wq"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("AAAAPwAAoL8AAAC/AAAAvwAAoL8AAAC/AAAAvwAAoL8AAAA/AAAAPwAAoL8AAAA/AAAAPwAAoD8AAAC/AAAAPwAAoD8AAAA/AAAAvwAAoD8AAAA/AAAAvwAAoD8AAAC//38AAP//////fwAA//////9/AAD//////38AAP//////f////3//v/9/////f/+//3////9//7//f////3//vw==")
+}, {
+"aabb": AABB(-0.5, -1.25, -0.5, 1, 2.5, 1),
+"attribute_data": PackedByteArray("uK9FP1VV1b+4r0U/VVXNMmoo2D1VVc0yaijYPVVV1b+rqmpAVVXVv6uqakAAAAAAAABAQAAAAAAAAEBAVVXVvwAAQMBVVdW/VVUVwFVV1b9VVRXAAAAAAAAAQMAAAAAA"),
+"format": 34359742487,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsA"),
+"material": SubResource("StandardMaterial3D_2ywf4"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("AAAAvwAAoD8AAAC/AAAAvwAAoL8AAAC/AAAAPwAAoL8AAAC/AAAAPwAAoD8AAAC/AAAAPwAAoD8AAAC/AAAAPwAAoL8AAAC/AAAAPwAAoL8AAAA/AAAAPwAAoD8AAAA/AAAAvwAAoD8AAAA/AAAAPwAAoD8AAAA/AAAAPwAAoL8AAAA/AAAAvwAAoL8AAAA//////wAA/7//////AAD/v/////8AAP+//////wAA/7////9//////////3//////////f/////////9///////9//3////+//3//f////7//f/9/////v/9//3////+/")
+}, {
+"aabb": AABB(-0.5, -1.25, -0.5, 1e-05, 2.5, 1),
+"attribute_data": PackedByteArray("AACgwAAAgL8AAIDAAACAvwAAgMAAAAAAAACgwAAAAAA="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAAACAAMA"),
+"material": SubResource("StandardMaterial3D_nqou2"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAAAvwAAoD8AAAC/AAAAvwAAoD8AAAA/AAAAvwAAoL8AAAA/AAAAvwAAoL8AAAC/AAD/f/9//78AAP9//3//vwAA/3//f/+/AAD/f/9//78=")
+}]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8c85j"]
+friction = 0.0
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_fwh7w"]
+data = PackedVector3Array(0.5, -1.25, -0.5, -0.5, -1.25, -0.5, -0.5, -1.25, 0.5, 0.5, -1.25, -0.5, -0.5, -1.25, 0.5, 0.5, -1.25, 0.5, 0.5, 1.25, -0.5, 0.5, 1.25, 0.5, -0.5, 1.25, 0.5, 0.5, 1.25, -0.5, -0.5, 1.25, 0.5, -0.5, 1.25, -0.5, -0.5, 1.25, -0.5, -0.5, -1.25, -0.5, 0.5, -1.25, -0.5, -0.5, 1.25, -0.5, 0.5, -1.25, -0.5, 0.5, 1.25, -0.5, 0.5, 1.25, -0.5, 0.5, -1.25, -0.5, 0.5, -1.25, 0.5, 0.5, 1.25, -0.5, 0.5, -1.25, 0.5, 0.5, 1.25, 0.5, -0.5, 1.25, 0.5, 0.5, 1.25, 0.5, 0.5, -1.25, 0.5, -0.5, 1.25, 0.5, 0.5, -1.25, 0.5, -0.5, -1.25, 0.5, -0.5, 1.25, -0.5, -0.5, 1.25, 0.5, -0.5, -1.25, 0.5, -0.5, 1.25, -0.5, -0.5, -1.25, 0.5, -0.5, -1.25, -0.5)
+
+[node name="Grey Left Hand Locker" type="Node3D"]
+
+[node name="entity_14_geometry" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("ArrayMesh_hjv27")
+
+[node name="entity_14_geometry_col" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+physics_material_override = SubResource("PhysicsMaterial_8c85j")
+metadata/sound = "iron"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity_14_geometry_col"]
+shape = SubResource("ConcavePolygonShape3D_fwh7w")

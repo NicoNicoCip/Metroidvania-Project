@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=4 uid="uid://rr706a4yp7x8"]
+
+[ext_resource type="Texture2D" uid="uid://k1pp0hecgics" path="res://HL_Textures/GLASSGREEN.png" id="1_inual"]
+[ext_resource type="Texture2D" uid="uid://dax8l8cqbuhfo" path="res://HL_Textures/genlocker.png" id="2_kbpyh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cte21"]
+albedo_texture = ExtResource("1_inual")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox40l"]
+albedo_texture = ExtResource("2_kbpyh")
+texture_filter = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_2wn1j"]
+_surfaces = [{
+"aabb": AABB(-0.5, -2, -0.5, 1, 4, 1),
+"attribute_data": PackedByteArray("AACgPwAAgL8AAKA/AAAAAAAAgD8AAAAAAACAPwAAgL8AAIA/AACAPwAAgD8AAKA/AABAPwAAoD8AAEA/AACAPwAAQL8AAOA/AAAAvwAA4D8AAAC/AAAAQAAAQL8AAABAAACgPwAAgL8AAKA/AAAAAAAAgD8AAAAAAACAPwAAgL8AAIC/AACAvwAAQL8AAIC/AABAvwAAAAAAAIC/AAAAAA=="),
+"format": 34359742487,
+"index_count": 30,
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMA"),
+"material": SubResource("StandardMaterial3D_cte21"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 20,
+"vertex_data": PackedByteArray("AAAAvwAAAEAAAAC/AAAAvwAAAMAAAAC/AAAAPwAAAMAAAAC/AAAAPwAAAEAAAAC/AAAAPwAAAMAAAAC/AAAAvwAAAMAAAAC/AAAAvwAAAMAAAAA/AAAAPwAAAMAAAAA/AAAAPwAAAEAAAAC/AAAAPwAAAEAAAAA/AAAAvwAAAEAAAAA/AAAAvwAAAEAAAAC/AAAAPwAAAEAAAAC/AAAAPwAAAMAAAAC/AAAAPwAAAMAAAAA/AAAAPwAAAEAAAAA/AAAAvwAAAEAAAAA/AAAAPwAAAEAAAAA/AAAAPwAAAMAAAAA/AAAAvwAAAMAAAAA//////wAA/7//////AAD/v/////8AAP+//////wAA/7//fwAA//////9/AAD//////38AAP//////fwAA//////9/////f/+//3////9//7//f////3//v/9/////f/+/////f/////////9//////////3//////////f///////f/9/////v/9//3////+//3//f////7//f/9/////vw==")
+}, {
+"aabb": AABB(-0.5, -2, -0.5, 1e-05, 4, 1),
+"attribute_data": PackedByteArray("AABAwAAAgL8AAADAAACAvwAAAMAAAAAAAABAwAAAAAA="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAABAAIAAAACAAMA"),
+"material": SubResource("StandardMaterial3D_ox40l"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAAAvwAAAEAAAAC/AAAAvwAAAEAAAAA/AAAAvwAAAMAAAAA/AAAAvwAAAMAAAAC/AAD/f/9//78AAP9//3//vwAA/3//f/+/AAD/f/9//78=")
+}]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_inual"]
+friction = 0.0
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_2h2s7"]
+data = PackedVector3Array(-0.5, 2, -0.5, -0.5, -2, -0.5, 0.5, -2, -0.5, -0.5, 2, -0.5, 0.5, -2, -0.5, 0.5, 2, -0.5, 0.5, -2, -0.5, -0.5, -2, -0.5, -0.5, -2, 0.5, 0.5, -2, -0.5, -0.5, -2, 0.5, 0.5, -2, 0.5, 0.5, 2, -0.5, 0.5, 2, 0.5, -0.5, 2, 0.5, 0.5, 2, -0.5, -0.5, 2, 0.5, -0.5, 2, -0.5, 0.5, 2, -0.5, 0.5, -2, -0.5, 0.5, -2, 0.5, 0.5, 2, -0.5, 0.5, -2, 0.5, 0.5, 2, 0.5, -0.5, 2, 0.5, 0.5, 2, 0.5, 0.5, -2, 0.5, -0.5, 2, 0.5, 0.5, -2, 0.5, -0.5, -2, 0.5, -0.5, 2, -0.5, -0.5, 2, 0.5, -0.5, -2, 0.5, -0.5, 2, -0.5, -0.5, -2, 0.5, -0.5, -2, -0.5)
+
+[node name="Green Locker" type="Node3D"]
+
+[node name="entity_13_geometry" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("ArrayMesh_2wn1j")
+
+[node name="entity_13_geometry_col" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+physics_material_override = SubResource("PhysicsMaterial_inual")
+metadata/sound = "iron"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="entity_13_geometry_col"]
+shape = SubResource("ConcavePolygonShape3D_2h2s7")

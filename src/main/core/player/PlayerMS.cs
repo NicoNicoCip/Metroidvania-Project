@@ -43,7 +43,7 @@ public partial class PlayerMS : GlobalMS
 
 		if (Input.IsActionJustPressed(debugTpInput))
 		{
-			rig.GlobalPosition = new(0, 0, -16);
+			rig.GlobalPosition = new(0, 1, -16);
 
 		}
 

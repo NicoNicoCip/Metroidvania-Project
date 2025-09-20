@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clwb6pyl3vuap"
-path="res://.godot/imported/c1a0_labw5.png-9692ade18ce942421b3f02d05368e989.ctex"
+path.s3tc="res://.godot/imported/C1A0_LABW5.png-6ff7b56fe8b611eb75149e07546e7234.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://HL_Textures/c1a0_labw5.png"
-dest_files=["res://.godot/imported/c1a0_labw5.png-9692ade18ce942421b3f02d05368e989.ctex"]
+source_file="res://HL_Textures/C1A0_LABW5.png"
+dest_files=["res://.godot/imported/C1A0_LABW5.png-6ff7b56fe8b611eb75149e07546e7234.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +38,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
