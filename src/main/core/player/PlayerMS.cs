@@ -1,29 +1,23 @@
-using System;
-using System.Text;
 using Godot;
 
-public partial class PlayerMS : GlobalMS
-{
+public partial class PlayerMS : GlobalMS {
 	[Export] float sensetivity = 5.0f;
 
 	ShapeCast3D crouchBoxCast;
 	public bool readyFlag = false;
 	float Xrot;
-	float Yrot; 
+	float Yrot;
 	float startYScale;
 	bool releaseCrouch;
 
-	public override void _Ready()
-	{
+	public override void _Ready() {
 		fun_Bind();
 		set_defaults();
 		startYScale = rig.Scale.Y;
 		readyFlag = true;
-		
 	}
 
-	public override void _PhysicsProcess(double delta)
-	{
+	public override void _PhysicsProcess(double delta) {
 		base._PhysicsProcess(delta);
 
 		const string moveBackwardsInput = "Move Backwards";
@@ -41,18 +35,15 @@ public partial class PlayerMS : GlobalMS
 			moveRightInput
 		);
 
-		if (Input.IsActionJustPressed(debugTpInput))
-		{
+		if (Input.IsActionJustPressed(debugTpInput)) {
 			rig.GlobalPosition = new(0, 1, -16);
-
 		}
 
 		maxAccel = maxSpeed * 10;
 
-		if (!phy_Sloped())
+		if (!phy_Sloped()) {
 			dir = fun_CalculateWishDir();
-		else
-		{
+		} else {
 			dir = phy_GetSlopeDir();
 			grounded = true;
 		}
@@ -60,13 +51,10 @@ public partial class PlayerMS : GlobalMS
 		fun_DragCalculations();
 		fun_UpdateVelocity(delta);
 
-		if (phy_Sloped())
-		{
+		if (phy_Sloped()) {
 			int defaultWait = -1;
 			phy_Jump(jumpInput, defaultWait, delta);
-		}
-		else
-		{
+		} else {
 			float specialWait = 0.2f;
 			phy_Jump(jumpInput, specialWait, delta);
 		}
@@ -77,23 +65,19 @@ public partial class PlayerMS : GlobalMS
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
-	public override void _Process(double delta)
-	{
+	public override void _Process(double delta) {
 		base._Process(delta);
 		int maxYLevelBeforeDeath = -64;
-		if (rig.GlobalPosition.Y <= maxYLevelBeforeDeath)
-		{
+		if (rig.GlobalPosition.Y <= maxYLevelBeforeDeath) {
 			fun_KillMe();
 		}
 	}
-	
-	public override void _Input(InputEvent @event)
-	{
+
+	public override void _Input(InputEvent @event) {
 		base._Input(@event);
 		const float sensitivityModifier = 0.001f;
 		const float maxVerticalClamp = 1.45f;
-		if (@event is InputEventMouseMotion mouseMotion)
-		{
+		if (@event is InputEventMouseMotion mouseMotion) {
 			Xrot -= mouseMotion.Relative.Y * sensitivityModifier * sensetivity;
 			Yrot -= mouseMotion.Relative.X * sensitivityModifier * sensetivity;
 
@@ -104,27 +88,21 @@ public partial class PlayerMS : GlobalMS
 		}
 	}
 
-	void fun_Bind()
-	{
+	void fun_Bind() {
 		crouchBoxCast = (ShapeCast3D)GetChild(1).GetChild(2).GetChild(5);
 		init_FullBind();
 	}
 
-	void phy_Crouch(double delta)
-	{
+	void phy_Crouch(double delta) {
 		const string crouchInput = "Crouch";
-		if (!waterBoxCast.IsColliding())
-		{
-			if (Input.IsActionJustPressed(crouchInput))
-			{
+		if (!waterBoxCast.IsColliding()) {
+			if (Input.IsActionJustPressed(crouchInput)) {
 				const float newYscale = 0.65f;
 				body.Scale = new Vector3(body.Scale.X, newYscale, body.Scale.Z);
 				rig.GetChild<CollisionShape3D>(0).Scale = body.Scale;
 				maxSpeed = 7.6f;
 			}
-		}
-		else
-		{
+		} else {
 			if (Input.IsActionPressed(crouchInput))
 				rig.ApplyForce(-body.Basis.Y * jumpForce);
 		}
@@ -136,8 +114,7 @@ public partial class PlayerMS : GlobalMS
 			phy_CheckForCrouching();
 	}
 
-	void phy_CheckForCrouching()
-	{
+	void phy_CheckForCrouching() {
 		body.Scale = new Vector3(body.Scale.X, startYScale, body.Scale.X);
 		rig.GetChild<CollisionShape3D>(0).Scale = body.Scale;
 		set_defaults();
@@ -148,8 +125,7 @@ public partial class PlayerMS : GlobalMS
 		releaseCrouch = false;
 	}
 
-	public void fun_KillMe()
-	{
+	public void fun_KillMe() {
 		GetTree().ReloadCurrentScene();
 	}
 }

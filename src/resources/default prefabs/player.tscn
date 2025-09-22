@@ -1,12 +1,20 @@
-[gd_scene load_steps=13 format=3 uid="uid://007uqjkj05gh"]
+[gd_scene load_steps=17 format=3 uid="uid://007uqjkj05gh"]
 
 [ext_resource type="Script" uid="uid://c38u0caewqpnq" path="res://src/main/core/player/PlayerMS.cs" id="1_1no8l"]
 [ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="2_8lesa"]
+[ext_resource type="Script" uid="uid://d4lj2y1jhxubl" path="res://src/main/core/player/ItemManager.cs" id="2_d3pck"]
 [ext_resource type="Script" uid="uid://d0oh4k6dniaar" path="res://src/main/core/player/CameraAH.cs" id="3_d3pck"]
 [ext_resource type="Script" uid="uid://ol4sh35pmc3w" path="res://src/main/core/player/FootstepsEngine.cs" id="4_65ygi"]
 [ext_resource type="AudioStream" uid="uid://ciso6451ly0sl" path="res://src/resources/sounds/hiking-boot-footsteps-on-grass.wav" id="5_7ekwg"]
+[ext_resource type="Script" uid="uid://65bei65inuqm" path="res://src/main/core/player/ItemDisplay.cs" id="5_65ygi"]
 [ext_resource type="AudioStream" uid="uid://nysix0thd8pr" path="res://src/resources/sounds/footstep_metal_crouch_5.wav" id="6_rmk8t"]
 [ext_resource type="AudioStream" uid="uid://cbdd7ty74sa2p" path="res://src/resources/sounds/steps-tile_2a.wav" id="7_ia1mv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7ekwg"]
+size = Vector2(0.17, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rmk8t"]
+albedo_color = Color(0.2647876, 0.6126055, 0.8571388, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yc87k"]
 
@@ -28,7 +36,8 @@ jumpForce = 3.0
 groundDrag = 6.0
 waterDrag = 8.0
 
-[node name="WeaponHolder" type="Node3D" parent="."]
+[node name="Player Items" type="Node3D" parent="."]
+script = ExtResource("2_d3pck")
 
 [node name="QMS" type="Node3D" parent="."]
 
@@ -56,7 +65,7 @@ rotation_order = 0
 script = ExtResource("2_8lesa")
 Holder = NodePath("../../../Rig/Cam Holder")
 
-[node name="AnimationHandler" type="Node3D" parent="QMS/ViewportCont/SubViewport/Head"]
+[node name="CameraHandler" type="Node3D" parent="QMS/ViewportCont/SubViewport/Head"]
 script = ExtResource("3_d3pck")
 xMul = 0.05
 yMul = 0.05
@@ -73,7 +82,16 @@ target_position = Vector3(0, 0, 1000)
 debug_shape_custom_color = Color(0.890196, 0.921569, 0, 1)
 debug_shape_thickness = 1
 
-[node name="Item Holder" type="Node3D" parent="QMS/ViewportCont/SubViewport/Head"]
+[node name="Item Holder" type="Node3D" parent="QMS/ViewportCont/SubViewport/Head" node_paths=PackedStringArray("manager", "blueKey")]
+script = ExtResource("5_65ygi")
+manager = NodePath("../../../../../Player Items")
+blueKey = NodePath("TEMP blue card")
+
+[node name="TEMP blue card" type="MeshInstance3D" parent="QMS/ViewportCont/SubViewport/Head/Item Holder"]
+transform = Transform3D(0.873786, -0.46727213, -0.13474011, -0.13532774, 0.032489326, -0.99026805, 0.4671023, 0.8835164, -0.034846168, 0.965, -0.641, -0.669)
+mesh = SubResource("PlaneMesh_7ekwg")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_rmk8t")
 
 [node name="Body" type="Node3D" parent="QMS" node_paths=PackedStringArray("Holder")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -91,8 +109,6 @@ Walk = NodePath("../Walk")
 walkstream = Array[AudioStream]([ExtResource("5_7ekwg"), ExtResource("6_rmk8t"), ExtResource("7_ia1mv")])
 
 [node name="Walk" type="AudioStreamPlayer3D" parent="QMS/Body"]
-volume_db = -33.507
-max_polyphony = 4
 
 [node name="Rig" type="RigidBody3D" parent="QMS"]
 process_mode = 3
