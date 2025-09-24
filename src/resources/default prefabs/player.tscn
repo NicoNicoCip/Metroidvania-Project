@@ -28,8 +28,9 @@ material = SubResource("StandardMaterial3D_yc87k")
 [sub_resource type="BoxShape3D" id="BoxShape3D_80goq"]
 size = Vector3(1.1, 2.2, 1.12)
 
-[node name="Player" type="Node3D"]
+[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel")]
 script = ExtResource("1_1no8l")
+fpsLabel = NodePath("QMS/ViewportCont/SubViewport/Control/Panel Container/Panel/RichTextLabel")
 maxSpeed = 6.0
 maxWaterSpeed = 5.0
 jumpForce = 3.0
@@ -51,12 +52,12 @@ grow_vertical = 2
 pivot_offset = Vector2(960, 540)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="QMS/ViewportCont"]
 handle_input_locally = false
+scaling_3d_scale = 1.0
 audio_listener_enable_3d = true
-size = Vector2i(1920, 1080)
+size = Vector2i(720, 540)
 render_target_update_mode = 4
 
 [node name="Head" type="Node3D" parent="QMS/ViewportCont/SubViewport" node_paths=PackedStringArray("Holder")]
@@ -88,10 +89,41 @@ manager = NodePath("../../../../../Player Items")
 blueKey = NodePath("TEMP blue card")
 
 [node name="TEMP blue card" type="MeshInstance3D" parent="QMS/ViewportCont/SubViewport/Head/Item Holder"]
-transform = Transform3D(0.873786, -0.46727213, -0.13474011, -0.13532774, 0.032489326, -0.99026805, 0.4671023, 0.8835164, -0.034846168, 0.965, -0.641, -0.669)
+transform = Transform3D(0.873786, -0.46727213, -0.13474011, -0.13532774, 0.032489326, -0.99026805, 0.4671023, 0.8835164, -0.034846168, 0.36, -0.281, -0.374)
 mesh = SubResource("PlaneMesh_7ekwg")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_rmk8t")
+
+[node name="Control" type="Control" parent="QMS/ViewportCont/SubViewport"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Panel Container" type="PanelContainer" parent="QMS/ViewportCont/SubViewport/Control"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 72.0
+offset_bottom = 72.0
+
+[node name="Panel" type="Panel" parent="QMS/ViewportCont/SubViewport/Control/Panel Container"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="QMS/ViewportCont/SubViewport/Control/Panel Container/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+text = "FPS"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Body" type="Node3D" parent="QMS" node_paths=PackedStringArray("Holder")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

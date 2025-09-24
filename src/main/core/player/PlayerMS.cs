@@ -2,6 +2,7 @@ using Godot;
 
 public partial class PlayerMS : GlobalMS {
 	[Export] float sensetivity = 5.0f;
+	[Export] RichTextLabel fpsLabel;
 
 	ShapeCast3D crouchBoxCast;
 	public bool readyFlag = false;
@@ -9,6 +10,13 @@ public partial class PlayerMS : GlobalMS {
 	float Yrot;
 	float startYScale;
 	bool releaseCrouch;
+
+	const string moveBackwardsInput = "Move Backwards";
+	const string moveForwardsInput = "Move Forwards";
+	const string moveLeftInput = "Move Left";
+	const string moveRightInput = "Move Right";
+	const string jumpInput = "Jump";
+	const string debugTpInput = "Debug TP Button";
 
 	public override void _Ready() {
 		fun_Bind();
@@ -20,12 +28,7 @@ public partial class PlayerMS : GlobalMS {
 	public override void _PhysicsProcess(double delta) {
 		base._PhysicsProcess(delta);
 
-		const string moveBackwardsInput = "Move Backwards";
-		const string moveForwardsInput = "Move Forwards";
-		const string moveLeftInput = "Move Left";
-		const string moveRightInput = "Move Right";
-		const string jumpInput = "Jump";
-		const string debugTpInput = "Debug TP Button";
+		fpsLabel.Text = Engine.GetFramesPerSecond().ToString();
 
 		phy_Grounded();
 		inputDir = Input.GetVector(

@@ -1,6 +1,5 @@
-[gd_scene load_steps=141 format=4 uid="uid://ww7nsmg8qn1c"]
+[gd_scene load_steps=140 format=4 uid="uid://ww7nsmg8qn1c"]
 
-[ext_resource type="Script" uid="uid://dudkfw0wgly0d" path="res://src/main/core/world/Master.cs" id="1_8l8sb"]
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_or2gd"]
 [ext_resource type="Script" uid="uid://c124u4dnejjmn" path="res://src/main/core/world/GeometryLoader.cs" id="2_g7bur"]
 [ext_resource type="Script" uid="uid://dmaweb18plfhq" path="res://src/main/core/world/RegionData.cs" id="3_ggbu7"]
@@ -1011,7 +1010,6 @@ data = PackedVector3Array(-8, 0.25, -7.25, -8, -0.25, -7.25, 0, -0.25, -7.25, -8
 size = Vector3(1.3608093, 0.64175415, 0.82196546)
 
 [node name="MainScene" type="CanvasLayer"]
-script = ExtResource("1_8l8sb")
 
 [node name="Root3D" type="Node3D" parent="."]
 
@@ -1030,6 +1028,10 @@ directional_shadow_max_distance = 230.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0411253, 74.5596, 148.965)
 maxAirSpeed = 8.0
 jumpForce = 15.0
+
+[node name="SubViewport" parent="Root3D/Player/QMS/ViewportCont" index="0"]
+scaling_3d_scale = 1.0
+size = Vector2i(720, 540)
 
 [node name="Map" type="Node3D" parent="Root3D"]
 

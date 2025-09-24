@@ -21,10 +21,14 @@ buses/default_bus_layout="uid://dhejh280vs8cq"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=720
+window/size/viewport_height=540
+window/size/borderless=true
+window/size/window_width_override=1280
+window/size/window_height_override=960
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+window/stretch/scale=1.25
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -90,3 +94,8 @@ Interact={
 [physics]
 
 3d/physics_engine="GodotPhysics3D"
+
+[rendering]
+
+scaling_3d/scale=0.75
+scaling_3d/fsr_sharpness=0.2
