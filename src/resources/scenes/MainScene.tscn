@@ -1,4 +1,4 @@
-[gd_scene load_steps=140 format=4 uid="uid://ww7nsmg8qn1c"]
+[gd_scene load_steps=138 format=4 uid="uid://ww7nsmg8qn1c"]
 
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_or2gd"]
 [ext_resource type="Script" uid="uid://c124u4dnejjmn" path="res://src/main/core/world/GeometryLoader.cs" id="2_g7bur"]
@@ -55,32 +55,15 @@
 [ext_resource type="Texture2D" uid="uid://d4nmr72uclymj" path="res://HL_Textures/c2a4_h2c.png" id="99_nsb3w"]
 [ext_resource type="Texture2D" uid="uid://ca5t8kuk6sf3r" path="res://HL_Textures/c2a4_h2e.png" id="100_wolrt"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_21j7q"]
-sky_top_color = Color(0.129558, 0.129558, 0.129558, 1)
-sky_horizon_color = Color(0.756863, 0.803922, 0.792157, 1)
-sky_curve = 0.0630673
-ground_horizon_color = Color(0.756863, 0.803922, 0.792157, 1)
-ground_curve = 0.0118921
-sun_curve = 0.310579
-
-[sub_resource type="Sky" id="Sky_oen3k"]
-sky_material = SubResource("ProceduralSkyMaterial_21j7q")
-
 [sub_resource type="Environment" id="Environment_rmsou"]
 background_energy_multiplier = 0.6
-sky = SubResource("Sky_oen3k")
-ambient_light_source = 3
+ambient_light_energy = 0.5
 reflected_light_source = 1
+fog_light_color = Color(0.64631176, 0.6778155, 0.72682005, 1)
 fog_sky_affect = 0.15
+fog_depth_curve = 0.70710796
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0869
-volumetric_fog_albedo = Color(0.364706, 0.364706, 0.364706, 1)
-volumetric_fog_emission = Color(0.0941176, 0.0941176, 0.0941176, 1)
-volumetric_fog_emission_energy = 0.2
-volumetric_fog_length = 200.0
-volumetric_fog_detail_spread = 6.0
-adjustment_enabled = true
-adjustment_saturation = 1.81
+volumetric_fog_albedo = Color(0.6955032, 0.6955031, 0.6955031, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q3lms"]
 size = Vector3(16.021, 106.971, 173.91272)
@@ -1028,10 +1011,6 @@ directional_shadow_max_distance = 230.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0411253, 74.5596, 148.965)
 maxAirSpeed = 8.0
 jumpForce = 15.0
-
-[node name="SubViewport" parent="Root3D/Player/QMS/ViewportCont" index="0"]
-scaling_3d_scale = 1.0
-size = Vector2i(720, 540)
 
 [node name="Map" type="Node3D" parent="Root3D"]
 

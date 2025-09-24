@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ca5t8kuk6sf3r"
-path.s3tc="res://.godot/imported/C2A4_H2E.png-9e89fbc0bab9b5d96c9df878325997e1.s3tc.ctex"
+path.s3tc="res://.godot/imported/c2a4_h2e.png-3804ce5ee867997a3b821d6b5798242d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://HL_Textures/C2A4_H2E.png"
-dest_files=["res://.godot/imported/C2A4_H2E.png-9e89fbc0bab9b5d96c9df878325997e1.s3tc.ctex"]
+source_file="res://HL_Textures/c2a4_h2e.png"
+dest_files=["res://.godot/imported/c2a4_h2e.png-3804ce5ee867997a3b821d6b5798242d.s3tc.ctex"]
 
 [params]
 
@@ -24,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

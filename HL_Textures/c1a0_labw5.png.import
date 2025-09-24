@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clwb6pyl3vuap"
-path.s3tc="res://.godot/imported/C1A0_LABW5.png-6ff7b56fe8b611eb75149e07546e7234.s3tc.ctex"
+path.s3tc="res://.godot/imported/c1a0_labw5.png-9692ade18ce942421b3f02d05368e989.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://HL_Textures/C1A0_LABW5.png"
-dest_files=["res://.godot/imported/C1A0_LABW5.png-6ff7b56fe8b611eb75149e07546e7234.s3tc.ctex"]
+source_file="res://HL_Textures/c1a0_labw5.png"
+dest_files=["res://.godot/imported/c1a0_labw5.png-9692ade18ce942421b3f02d05368e989.s3tc.ctex"]
 
 [params]
 
@@ -24,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

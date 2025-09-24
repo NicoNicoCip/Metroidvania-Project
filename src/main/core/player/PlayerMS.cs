@@ -17,6 +17,7 @@ public partial class PlayerMS : GlobalMS {
 	const string moveRightInput = "Move Right";
 	const string jumpInput = "Jump";
 	const string debugTpInput = "Debug TP Button";
+	const string crouchInput = "Crouch";
 
 	public override void _Ready() {
 		fun_Bind();
@@ -97,7 +98,6 @@ public partial class PlayerMS : GlobalMS {
 	}
 
 	void phy_Crouch(double delta) {
-		const string crouchInput = "Crouch";
 		if (!waterBoxCast.IsColliding()) {
 			if (Input.IsActionJustPressed(crouchInput)) {
 				const float newYscale = 0.65f;

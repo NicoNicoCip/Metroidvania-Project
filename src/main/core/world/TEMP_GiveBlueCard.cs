@@ -3,7 +3,7 @@ using System;
 
 public partial class TEMP_GiveBlueCard : AreaInteraction {
   const string interactAction = "Interact";
-  const int looseLookAngle = 15; // degrees.
+  const int looseLookAngle = 30; // degrees.
   private ItemManager manager = null;
   private bool isInitialized = false;
 

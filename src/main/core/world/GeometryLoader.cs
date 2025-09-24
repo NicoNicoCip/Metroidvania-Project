@@ -39,15 +39,21 @@ public partial class GeometryLoader : Node3D {
     if (body != rig) return;
 
     // hide all region data 
-    foreach (RegionData r in region)
+    foreach (RegionData r in region) {
       r.region.Visible = false;
+      r.region.ProcessMode = ProcessModeEnum.Disabled;
+    }
 
     // calculate which regions to set visible.
     for (int i = 0; i < region.Count; i++) {
       if (area[i].OverlapsBody(rig)) {
         region[i].region.Visible = true;
-        foreach (RegionData neighbour in region[i].AdjacentRooms.Cast<RegionData>())
+        region[i].region.ProcessMode = ProcessModeEnum.Inherit;
+
+        foreach (RegionData neighbour in region[i].AdjacentRooms.Cast<RegionData>()) {
           neighbour.region.Visible = true;
+          neighbour.region.ProcessMode = ProcessModeEnum.Inherit;
+        }
       }
     }
 

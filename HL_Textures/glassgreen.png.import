@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://k1pp0hecgics"
-path.s3tc="res://.godot/imported/GLASSGREEN.png-1054c1b133a8e0aa582d74c6d85edeac.s3tc.ctex"
+path.s3tc="res://.godot/imported/glassgreen.png-c108b4ee76f292cb14bfa86664888af8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://HL_Textures/GLASSGREEN.png"
-dest_files=["res://.godot/imported/GLASSGREEN.png-1054c1b133a8e0aa582d74c6d85edeac.s3tc.ctex"]
+source_file="res://HL_Textures/glassgreen.png"
+dest_files=["res://.godot/imported/glassgreen.png-c108b4ee76f292cb14bfa86664888af8.s3tc.ctex"]
 
 [params]
 
@@ -24,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

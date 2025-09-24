@@ -24,10 +24,9 @@ buses/default_bus_layout="uid://dhejh280vs8cq"
 window/size/viewport_width=720
 window/size/viewport_height=540
 window/size/borderless=true
-window/size/window_width_override=1280
-window/size/window_height_override=960
+window/size/window_width_override=1024
+window/size/window_height_override=768
 window/stretch/mode="viewport"
-window/stretch/scale=1.25
 window/vsync/vsync_mode=0
 
 [dotnet]
@@ -97,5 +96,10 @@ Interact={
 
 [rendering]
 
+lights_and_shadows/directional_shadow/size=1024
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=0
 scaling_3d/scale=0.75
 scaling_3d/fsr_sharpness=0.2
+limits/opengl/max_renderable_lights=8
+lights_and_shadows/positional_shadow/atlas_size=1024
