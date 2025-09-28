@@ -98,9 +98,9 @@ public partial class GlobalMS : Node3D {
 
     if (contactCollider != null) {
       if (contactCast.IsColliding() && GetParent() == initialParent) {
-        CallDeferred(nameof(DeferredReparent), contactCollider);
+        Reparent(contactCollider, true);
       } else if (contactCast.IsColliding() && contactCollider != GetParent()) {
-        CallDeferred(nameof(DeferredReparent), initialParent);
+        Reparent(initialParent, true);
       }
     }
 
@@ -110,11 +110,6 @@ public partial class GlobalMS : Node3D {
       rig.LinearVelocity = phy_UpdateVelAir(dir, rig.LinearVelocity, delta);
     else
       rig.LinearVelocity = phy_UpdateVelWater(dir, rig.LinearVelocity, delta);
-  }
-  private void DeferredReparent(Node newParent) {
-    if (newParent != null && IsInstanceValid(newParent)) {
-      Reparent(newParent, true);
-    }
   }
   protected void phy_Jump(bool act, float wait, double delta) {
     float w = 0;

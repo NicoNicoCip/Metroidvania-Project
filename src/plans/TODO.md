@@ -1,11 +1,13 @@
-	(done)	1. Reorganize the project files
-2. Document all the code
-3. Fix the scene tree
-	(done)	4. Fix sound crackling
-5. Fix animated platforms not moving the player as well.
-6. Fix region system using Node3D instead of FUCKING RegionDada. FUUUUCK.
+# TODO LIST #
+	[X] 1. Reorganize the project files
 
-								SECTION 1
+	[ ] 2. Document all the code
+	[ ] 3. Fix the scene tree
+	[X] 4. Fix sound crackling
+	[ ] 4. Fix animated platforms not moving the player as well.
+	[x] 5. Fix region system using Node3D instead of FUCKING RegionDada. FUUUUCK.
+
+## [ ] SECTION 1 ##
 	
 	you will start in the warehouse, where you will learn how buttons work.
 	
@@ -80,5 +82,3 @@
 	break the rafter blocking the entrance. he will break some boxes in the room
 	and leave behind his arm, along with that part of his suit, before walking
 	over to the right path, and dashing across it off screen.
-	
-						END OF DEMO. and of Section 1

@@ -28,7 +28,9 @@ public partial class AreaInteraction : Area3D {
   /// </summary>
   /// <param name="observer">The node doing the looking</param>
   /// <param name="target">The node being looked at</param>
-  /// <param name="angleThreshold">Maximum angle in degrees (default 45°)</param>
+  /// <param name="angleThreshold">
+  ///   Maximum angle in degrees (default 45°)
+  /// </param>
   /// <returns>True if observer is looking at target</returns>
   public static bool IsLookingAt(Node3D observer, Node3D target, float angleThreshold = 45f) {
     // get world positions

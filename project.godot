@@ -93,6 +93,7 @@ Interact={
 [physics]
 
 3d/physics_engine="GodotPhysics3D"
+common/physics_interpolation=true
 
 [rendering]
 
