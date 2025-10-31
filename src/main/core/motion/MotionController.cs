@@ -84,14 +84,10 @@ public abstract partial class MotionController : Node3D {
         
         // Ensure RigidBody is set up correctly for motion control
         if (rigidBody != null) {
-            rigidBody.GravityScale = gravityScale;
+            // Disable built-in gravity - we'll handle it manually for better control
+            rigidBody.GravityScale = 0.0f;
             rigidBody.LockRotation = true;  // Prevent physics from rotating the body
             rigidBody.ContinuousCd = true;  // Better collision detection for fast movement
-            
-            // Debug: Check if gravity is working
-            GD.Print($"[MotionController] RigidBody gravity scale set to: {rigidBody.GravityScale}");
-            GD.Print($"[MotionController] RigidBody freeze mode: {rigidBody.FreezeMode}");
-            GD.Print($"[MotionController] RigidBody freeze: {rigidBody.Freeze}");
         }
     }
 
@@ -112,7 +108,6 @@ public abstract partial class MotionController : Node3D {
         this.delta = (float)delta;
         
         UpdatePhysicsState();
-        UpdateGravity();
         
         Vector3 wishDir = GetWishDirection();
         
@@ -142,19 +137,6 @@ public abstract partial class MotionController : Node3D {
             DetectSurfaceProperties();
         }
     }
-
-    private void UpdateGravity() {
-        // Apply gravity scale based on state
-        float effectiveGravity = GetEffectiveGravityScale();
-        if (inWater || onSlope) {
-            rigidBody.GravityScale = 0.0f;
-        } else {
-            rigidBody.GravityScale = effectiveGravity;
-        }
-        
-        // Debug output (remove after testing)
-        // GD.Print($"Gravity Scale: {rigidBody.GravityScale}, Grounded: {grounded}, InWater: {inWater}, OnSlope: {onSlope}");
-    }
     #endregion
 
     #region Abstract Methods - Must be implemented by subclasses
@@ -170,20 +152,26 @@ public abstract partial class MotionController : Node3D {
     #region Core Quake Physics
     private void ApplyMovement(Vector3 wishDir) {
         Vector3 velocity = rigidBody.LinearVelocity;
+        Vector3 targetVel = new();
         
         if (onSlope && slopeCast != null) {
-            wishDir = ProjectOnPlane(wishDir, slopeCast.GetCollisionNormal()).Normalized();
+            wishDir = ProjectOnPlane(
+                wishDir, 
+                slopeCast.GetCollisionNormal()
+            ).Normalized();
         }
         
         if (grounded) {
-            velocity = UpdateVelocityGround(wishDir, velocity);
+            targetVel = UpdateVelocityGround(wishDir, velocity);
         } else if (inWater) {
-            velocity = UpdateVelocityWater(wishDir, velocity);
+            targetVel = UpdateVelocityWater(wishDir, velocity);
         } else {
-            velocity = UpdateVelocityAir(wishDir, velocity);
+            targetVel = UpdateVelocityAir(wishDir, velocity);
         }
-        
-        rigidBody.LinearVelocity = velocity;
+
+        Vector3 velocityDelta = targetVel - velocity;
+
+        rigidBody.ApplyCentralForce(velocityDelta / delta);
     }
 
     private Vector3 UpdateVelocityGround(Vector3 wishDir, Vector3 velocity) {
@@ -198,10 +186,22 @@ public abstract partial class MotionController : Node3D {
     private Vector3 UpdateVelocityAir(Vector3 wishDir, Vector3 velocity) {
         float effectiveAirSpeed = GetEffectiveAirSpeed();
         float effectiveAccel = GetEffectiveAcceleration();
+        float effectiveGravity = GetEffectiveGravityScale();
         
+        // Apply air acceleration
         float currentSpeed = velocity.Dot(wishDir);
         float addSpeed = Mathf.Clamp(effectiveAirSpeed - currentSpeed, 0, effectiveAccel * delta);
-        return velocity + addSpeed * wishDir;
+        velocity += addSpeed * wishDir;
+        
+        // Apply gravity manually (pulling down towards world origin)
+        // Using ProjectSettings.GetSetting to get the global gravity vector
+        float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+        Vector3 gravityDir = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
+        
+        // Apply gravity with our scale
+        velocity += gravityDir * gravity * effectiveGravity * delta;
+        
+        return velocity;
     }
 
     private Vector3 UpdateVelocityWater(Vector3 wishDir, Vector3 velocity) {

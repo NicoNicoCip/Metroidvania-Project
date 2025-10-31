@@ -1,6 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://c26av2fiq20t4"]
+[gd_scene load_steps=17 format=3 uid="uid://c26av2fiq20t4"]
 
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_3kg6d"]
+[ext_resource type="Script" uid="uid://bb2od1kerafoj" path="res://src/main/core/motion/Ball.cs" id="2_3kg6d"]
+[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="3_ovx7p"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_x1sgw"]
 size = Vector2(100, 100)
@@ -17,13 +19,20 @@ color_ramp = SubResource("Gradient_3kg6d")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdp6p"]
 albedo_texture = SubResource("NoiseTexture2D_x1sgw")
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3kg6d"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x1sgw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ovx7p"]
 size = Vector3(100, 0.1, 100)
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ovx7p"]
+
+[sub_resource type="Sky" id="Sky_x1sgw"]
+sky_material = SubResource("ProceduralSkyMaterial_ovx7p")
+
 [sub_resource type="Environment" id="Environment_3kg6d"]
+background_mode = 2
 background_energy_multiplier = 0.6
+sky = SubResource("Sky_x1sgw")
 ambient_light_energy = 0.5
 reflected_light_source = 1
 fog_light_color = Color(0.64631176, 0.6778155, 0.72682005, 1)
@@ -32,16 +41,28 @@ fog_depth_curve = 0.70710796
 volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.6955032, 0.6955031, 0.6955031, 1)
 
+[sub_resource type="SphereMesh" id="SphereMesh_3kg6d"]
+radius = 2.0
+height = 4.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ovx7p"]
+friction = 0.07
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wtrjt"]
+radius = 2.0
+
 [node name="MS Testing Ground" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_3kg6d")]
+dashForce = 18.0
+jumpForce = 280.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_x1sgw")
 surface_material_override/0 = SubResource("StandardMaterial3D_tdp6p")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-physics_material_override = SubResource("PhysicsMaterial_3kg6d")
+physics_material_override = SubResource("PhysicsMaterial_x1sgw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_ovx7p")
@@ -55,3 +76,28 @@ environment = SubResource("Environment_3kg6d")
 transform = Transform3D(0.894414, 0.402953, -0.194044, 0.098648, 0.245439, 0.96438, 0.436226, -0.881697, 0.179773, 0, 0, 0)
 shadow_enabled = true
 directional_shadow_max_distance = 230.0
+
+[node name="Ball" type="Node3D" parent="." node_paths=PackedStringArray("rigidBody", "groundCast")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3028865, 4.6040654, -11.424171)
+script = ExtResource("2_3kg6d")
+maxSpeed = 50.0
+groundDrag = 2.0
+rigidBody = NodePath("RigidBody3D")
+groundCast = NodePath("RigidBody3D/RayCast3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ball" node_paths=PackedStringArray("toFollow")]
+mesh = SubResource("SphereMesh_3kg6d")
+skeleton = NodePath("../RigidBody3D")
+script = ExtResource("3_ovx7p")
+toFollow = NodePath("../RigidBody3D")
+lerp = 0.25
+
+[node name="RigidBody3D" type="RigidBody3D" parent="Ball"]
+mass = 3.0
+physics_material_override = SubResource("PhysicsMaterial_ovx7p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ball/RigidBody3D"]
+shape = SubResource("SphereShape3D_wtrjt")
+
+[node name="RayCast3D" type="RayCast3D" parent="Ball/RigidBody3D"]
+target_position = Vector3(0, -0.6, 0)

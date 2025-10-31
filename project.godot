@@ -27,6 +27,7 @@ window/size/borderless=true
 window/size/window_width_override=768
 window/size/window_height_override=691
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
 
 [dotnet]
@@ -89,17 +90,24 @@ Interact={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":101,"location":0,"echo":false,"script":null)
 ]
 }
+Shift={
+"deadzone": 0.0,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 
 [physics]
 
+3d/run_on_separate_thread=true
 3d/physics_engine="GodotPhysics3D"
+jolt_physics_3d/simulation/position_steps=4
 
 [rendering]
 
-lights_and_shadows/directional_shadow/size=1024
-lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
-lights_and_shadows/positional_shadow/soft_shadow_filter_quality=0
+lights_and_shadows/directional_shadow/size=2048
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=1
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=1
 scaling_3d/scale=0.75
 scaling_3d/fsr_sharpness=0.2
 limits/opengl/max_renderable_lights=8
-lights_and_shadows/positional_shadow/atlas_size=1024
+lights_and_shadows/positional_shadow/atlas_size=2048
