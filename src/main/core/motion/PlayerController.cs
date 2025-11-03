@@ -112,4 +112,10 @@ public partial class PlayerController : Entity {
         }
     }
     #endregion
+
+    #region getters
+    public RigidBody3D getRigidBody() {
+        return rigidBody;
+    }
+    #endregion
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=138 format=4 uid="uid://ww7nsmg8qn1c"]
+[gd_scene load_steps=140 format=4 uid="uid://ww7nsmg8qn1c"]
 
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_or2gd"]
 [ext_resource type="Script" uid="uid://c124u4dnejjmn" path="res://src/main/core/world/GeometryLoader.cs" id="2_g7bur"]
@@ -18,7 +18,9 @@
 [ext_resource type="Texture2D" uid="uid://cnnn5m1kvq06p" path="res://HL_Textures/-0silo2_wall2.png" id="18_5oc0u"]
 [ext_resource type="Texture2D" uid="uid://cygf8sg2521l1" path="res://HL_Textures/+0~fifts_lght5.png" id="18_kws34"]
 [ext_resource type="AudioStream" uid="uid://dty36rux0fdm8" path="res://src/resources/sounds/neon-lights-flicker-bathroom.wav" id="19_7uyu7"]
+[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="19_g7k2d"]
 [ext_resource type="AudioStream" uid="uid://1461nfu3cwtb" path="res://src/resources/sounds/standardlamp-switch.wav" id="20_42hx6"]
+[ext_resource type="Script" uid="uid://cur233u1bnpje" path="res://src/main/core/motion/MovingPlatform.cs" id="20_q7hm1"]
 [ext_resource type="PackedScene" uid="uid://3tejdh5mat6c" path="res://src/resources/prefabs/crate_on_a_pellet.tscn" id="25_sqjov"]
 [ext_resource type="PackedScene" uid="uid://cnf6y3c0k7n85" path="res://src/resources/prefabs/moist_old_crate.tscn" id="27_3xueb"]
 [ext_resource type="PackedScene" uid="uid://bky8qh2jugyhs" path="res://src/resources/prefabs/grey_right_hand_locker.tscn" id="27_j7irr"]
@@ -217,6 +219,13 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 3.093856, 5.9979296, 8.99625, 11.994726, 14.997578, 18, 20.998322, 23.99707, 26.993439, 29.996876, 32.99555, 35.998596, 38.994728, 39.999786, 44.9245, 46.886116, 48.847664, 50.80914, 52.770508, 54.732075, 56.693634, 58.655167, 60.61667, 62.57817, 64.53308, 66.000084, 67.39991, 70.49407, 70.49977)
 }
 tracks/2/use_blend = false
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Lift/Cart/entity_16_geometry_col")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(40, 1, 0, 0, 11, 45, 1, 0, 0, 11, 66, 1, 0, 0, -11.0449)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qsbm5"]
 _data = {
@@ -994,122 +1003,128 @@ size = Vector3(1.3608093, 0.64175415, 0.82196546)
 
 [node name="MainScene" type="CanvasLayer"]
 
-[node name="Root3D" type="Node3D" parent="."]
+[node name="Root" type="Node3D" parent="."]
 
-[node name="Enviorment" type="Node" parent="Root3D"]
+[node name="Player" parent="Root" instance=ExtResource("1_or2gd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.37251255, 73.5, 149.05428)
 
-[node name="ENV" type="WorldEnvironment" parent="Root3D/Enviorment"]
+[node name="Enviorment" type="Node" parent="Root"]
+
+[node name="ENV" type="WorldEnvironment" parent="Root/Enviorment"]
 environment = SubResource("Environment_rmsou")
 
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Root3D/Enviorment"]
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Root/Enviorment"]
 transform = Transform3D(0.894414, 0.402953, -0.194044, 0.098648, 0.245439, 0.96438, 0.436226, -0.881697, 0.179773, 0, 0, 0)
 light_energy = 0.05
 shadow_enabled = true
 directional_shadow_max_distance = 230.0
 
-[node name="Player" parent="Root3D" instance=ExtResource("1_or2gd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0411253, 74.5596, 148.965)
-maxAirSpeed = 8.0
-jumpForce = 15.0
+[node name="Map" type="Node3D" parent="Root"]
 
-[node name="Map" type="Node3D" parent="Root3D"]
-
-[node name="GeometryLoader" type="Node3D" parent="Root3D/Map" node_paths=PackedStringArray("player")]
+[node name="GeometryLoader" type="Node3D" parent="Root/Map" node_paths=PackedStringArray("player")]
 script = ExtResource("2_g7bur")
 player = NodePath("../../Player")
 
-[node name="R1 Lift" type="Node3D" parent="Root3D/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
+[node name="R1 Lift" type="Node3D" parent="Root/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
 script = ExtResource("3_ggbu7")
 region = NodePath("region")
 AdjacentRooms = [NodePath("../R2 Room 1")]
 
-[node name="Area" type="Area3D" parent="Root3D/Map/R1 Lift"]
+[node name="Area" type="Area3D" parent="Root/Map/R1 Lift"]
 monitorable = false
 reverb_bus_enabled = true
 reverb_bus_name = &"SmallRoom"
 reverb_bus_amount = 1.0
 reverb_bus_uniformity = 0.17
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R1 Lift/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R1 Lift/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 32.0864, 69.14224)
 shape = SubResource("BoxShape3D_q3lms")
 debug_fill = false
 
-[node name="region" type="Node3D" parent="Root3D/Map/R1 Lift"]
+[node name="region" type="Node3D" parent="Root/Map/R1 Lift"]
 physics_interpolation_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Root3D/Map/R1 Lift/region"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Root/Map/R1 Lift/region"]
 callback_mode_process = 0
 libraries = {
 &"": SubResource("AnimationLibrary_qsbm5")
 }
 script = ExtResource("4_f2t5f")
 
-[node name="Rail" type="Node3D" parent="Root3D/Map/R1 Lift/region"]
+[node name="Rail" type="Node3D" parent="Root/Map/R1 Lift/region"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.125, 33.375)
 
-[node name="entity_20_geometry" type="MeshInstance3D" parent="Root3D/Map/R1 Lift/region/Rail"]
+[node name="entity_20_geometry" type="MeshInstance3D" parent="Root/Map/R1 Lift/region/Rail"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.041668, 50.708336)
 mesh = SubResource("ArrayMesh_c642s")
 skeleton = NodePath("../../../../../../TBLoader/Rail")
 
-[node name="Lift" type="Node3D" parent="Root3D/Map/R1 Lift/region"]
+[node name="Lift" type="Node3D" parent="Root/Map/R1 Lift/region"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 74, 148)
 
-[node name="Sound Controller" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift" node_paths=PackedStringArray("switchers")]
+[node name="Sound Controller" type="Node3D" parent="Root/Map/R1 Lift/region/Lift" node_paths=PackedStringArray("switchers")]
 script = ExtResource("8_b0rmg")
 switchers = [NodePath("../Lights/Neon Light/AudioStreamPlayer3D"), NodePath("../Lights/Neon Light/AudioStreamPlayer3D2"), NodePath("../Lights/Neon Light/OmniLight3D")]
 
-[node name="Cart" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0332465, 1.3506, 0.2946)
-
-[node name="entity_21_geometry" type="MeshInstance3D" parent="Root3D/Map/R1 Lift/region/Lift/Cart"]
+[node name="entity_21_geometry" type="MeshInstance3D" parent="Root/Map/R1 Lift/region/Lift" node_paths=PackedStringArray("toFollow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0332465, 1.3506012, 0.29460144)
 mesh = SubResource("ArrayMesh_n13ds")
+skeleton = NodePath("../Cart")
+script = ExtResource("19_g7k2d")
+toFollow = NodePath("../Cart")
 
-[node name="entity_16_geometry_col" type="StaticBody3D" parent="Root3D/Map/R1 Lift/region/Lift/Cart"]
+[node name="Cart" type="Node3D" parent="Root/Map/R1 Lift/region/Lift"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0332465, 1.3506012, 0.29460144)
+
+[node name="entity_16_geometry_col" type="AnimatableBody3D" parent="Root/Map/R1 Lift/region/Lift/Cart"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
+collision_mask = 8
 physics_material_override = SubResource("PhysicsMaterial_b0rmg")
+script = ExtResource("20_q7hm1")
 metadata/Sound = "iron"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R1 Lift/region/Lift/Cart/entity_16_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R1 Lift/region/Lift/Cart/entity_16_geometry_col"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
 shape = SubResource("ConcavePolygonShape3D_4q3ht")
 debug_fill = false
 
-[node name="Door Frame" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift"]
+[node name="Door Frame" type="Node3D" parent="Root/Map/R1 Lift/region/Lift"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00520833, 2.0625, -1.2656)
 
-[node name="entity_17_geometry" type="MeshInstance3D" parent="Root3D/Map/R1 Lift/region/Lift/Door Frame"]
+[node name="entity_17_geometry" type="MeshInstance3D" parent="Root/Map/R1 Lift/region/Lift/Door Frame"]
 mesh = SubResource("ArrayMesh_5nl7a")
 
-[node name="entity_17_geometry_col" type="StaticBody3D" parent="Root3D/Map/R1 Lift/region/Lift/Door Frame"]
+[node name="entity_17_geometry_col" type="StaticBody3D" parent="Root/Map/R1 Lift/region/Lift/Door Frame"]
 physics_material_override = SubResource("PhysicsMaterial_ix0d8")
 metadata/sound = "iron"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R1 Lift/region/Lift/Door Frame/entity_17_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R1 Lift/region/Lift/Door Frame/entity_17_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_uo385")
 
-[node name="Door" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift"]
+[node name="Door" type="Node3D" parent="Root/Map/R1 Lift/region/Lift"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.188, -1.328)
 
-[node name="entity_18_geometry" type="MeshInstance3D" parent="Root3D/Map/R1 Lift/region/Lift/Door"]
+[node name="entity_18_geometry" type="MeshInstance3D" parent="Root/Map/R1 Lift/region/Lift/Door"]
 mesh = SubResource("ArrayMesh_yjqb1")
 
-[node name="entity_18_geometry_col" type="StaticBody3D" parent="Root3D/Map/R1 Lift/region/Lift/Door"]
+[node name="entity_18_geometry_col" type="StaticBody3D" parent="Root/Map/R1 Lift/region/Lift/Door"]
 physics_material_override = SubResource("PhysicsMaterial_ix0d8")
 metadata/sound = ""
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R1 Lift/region/Lift/Door/entity_18_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R1 Lift/region/Lift/Door/entity_18_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_3hapl")
 
-[node name="Lights" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift"]
+[node name="Lights" type="Node3D" parent="Root/Map/R1 Lift/region/Lift"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 
-[node name="Neon Light" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift/Lights"]
+[node name="Neon Light" type="Node3D" parent="Root/Map/R1 Lift/region/Lift/Lights"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.0200423, 3.5, -9.90967)
 
-[node name="entity_11_geometry" type="MeshInstance3D" parent="Root3D/Map/R1 Lift/region/Lift/Lights/Neon Light"]
+[node name="entity_11_geometry" type="MeshInstance3D" parent="Root/Map/R1 Lift/region/Lift/Lights/Neon Light"]
 mesh = SubResource("ArrayMesh_56yqw")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Root3D/Map/R1 Lift/region/Lift/Lights/Neon Light"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Root/Map/R1 Lift/region/Lift/Lights/Neon Light"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.376093, 0)
 light_color = Color(0.854902, 0.596078, 0.431373, 1)
 light_energy = 0.887
@@ -1122,7 +1137,7 @@ distance_fade_enabled = true
 omni_range = 6.5
 omni_attenuation = 0.329877
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root3D/Map/R1 Lift/region/Lift/Lights/Neon Light"]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root/Map/R1 Lift/region/Lift/Lights/Neon Light"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.04324341, -0.3355484, -0.020042302)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1133,7 +1148,7 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root3D/Map/R1 Lift/region/Lift/Lights/Neon Light"]
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root/Map/R1 Lift/region/Lift/Lights/Neon Light"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.04324341, -0.3355484, -0.020042302)
 stream = ExtResource("20_42hx6")
 volume_db = -14.546
@@ -1144,18 +1159,18 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Sounds" type="Node3D" parent="Root3D/Map/R1 Lift/region/Lift"]
+[node name="Sounds" type="Node3D" parent="Root/Map/R1 Lift/region/Lift"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 
-[node name="Lift moving" type="AudioStreamPlayer3D" parent="Root3D/Map/R1 Lift/region/Lift/Sounds"]
+[node name="Lift moving" type="AudioStreamPlayer3D" parent="Root/Map/R1 Lift/region/Lift/Sounds"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, -11)
 
-[node name="R2 Room 1" type="Node3D" parent="Root3D/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
+[node name="R2 Room 1" type="Node3D" parent="Root/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
 script = ExtResource("3_ggbu7")
 region = NodePath("region")
 AdjacentRooms = [NodePath("../R1 Lift"), NodePath("../R3 Passage 1")]
 
-[node name="Area" type="Area3D" parent="Root3D/Map/R2 Room 1"]
+[node name="Area" type="Area3D" parent="Root/Map/R2 Room 1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0612245, 4.044962, -37.709183)
 monitorable = false
 priority = 1
@@ -1163,76 +1178,76 @@ reverb_bus_enabled = true
 reverb_bus_name = &"SmallRoom"
 reverb_bus_amount = 1.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R2 Room 1/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R2 Room 1/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9254923, 2.559762, 1.2512703)
 shape = SubResource("BoxShape3D_ipwia")
 debug_fill = false
 
-[node name="region" type="Node3D" parent="Root3D/Map/R2 Room 1"]
+[node name="region" type="Node3D" parent="Root/Map/R2 Room 1"]
 
-[node name="FirstRoom" type="Node3D" parent="Root3D/Map/R2 Room 1/region"]
+[node name="FirstRoom" type="Node3D" parent="Root/Map/R2 Room 1/region"]
 
-[node name="entity_16_geometry" type="MeshInstance3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom"]
+[node name="entity_16_geometry" type="MeshInstance3D" parent="Root/Map/R2 Room 1/region/FirstRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0612245, 4.044962, -37.709183)
 mesh = SubResource("ArrayMesh_ak1id")
 skeleton = NodePath("")
 
-[node name="entity_16_geometry_col" type="StaticBody3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom"]
+[node name="entity_16_geometry_col" type="StaticBody3D" parent="Root/Map/R2 Room 1/region/FirstRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0612245, 4.044962, -37.709183)
 physics_material_override = SubResource("PhysicsMaterial_cxdio")
 metadata/sound = "iron"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/entity_16_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R2 Room 1/region/FirstRoom/entity_16_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_j7irr")
 debug_fill = false
 
-[node name="Lift" type="Node3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom"]
+[node name="Lift" type="Node3D" parent="Root/Map/R2 Room 1/region/FirstRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6061053, -16.447266)
 
-[node name="entity_19_geometry" type="MeshInstance3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/Lift"]
+[node name="entity_19_geometry" type="MeshInstance3D" parent="Root/Map/R2 Room 1/region/FirstRoom/Lift"]
 mesh = SubResource("ArrayMesh_8aihp")
 
-[node name="entity_19_geometry_col" type="StaticBody3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/Lift"]
+[node name="entity_19_geometry_col" type="StaticBody3D" parent="Root/Map/R2 Room 1/region/FirstRoom/Lift"]
 physics_material_override = SubResource("PhysicsMaterial_b8eb7")
 metadata/Sound = "iron"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/Lift/entity_19_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R2 Room 1/region/FirstRoom/Lift/entity_19_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_ywk3n")
 debug_fill = false
 
-[node name="underfloor" type="Node3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom"]
+[node name="underfloor" type="Node3D" parent="Root/Map/R2 Room 1/region/FirstRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, -0.3125, -36.5)
 
-[node name="entity_17_geometry" type="MeshInstance3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/underfloor"]
+[node name="entity_17_geometry" type="MeshInstance3D" parent="Root/Map/R2 Room 1/region/FirstRoom/underfloor"]
 mesh = SubResource("ArrayMesh_jdcfc")
 
-[node name="entity_17_geometry_col" type="StaticBody3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/underfloor"]
+[node name="entity_17_geometry_col" type="StaticBody3D" parent="Root/Map/R2 Room 1/region/FirstRoom/underfloor"]
 physics_material_override = SubResource("PhysicsMaterial_o7rgh")
 metadata/Sound = "iron"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/underfloor/entity_17_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R2 Room 1/region/FirstRoom/underfloor/entity_17_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_c17et")
 debug_fill = false
 
-[node name="no collision" type="Node3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom"]
+[node name="no collision" type="Node3D" parent="Root/Map/R2 Room 1/region/FirstRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.375, 10.75, -19.0625)
 
-[node name="entity_18_geometry" type="MeshInstance3D" parent="Root3D/Map/R2 Room 1/region/FirstRoom/no collision"]
+[node name="entity_18_geometry" type="MeshInstance3D" parent="Root/Map/R2 Room 1/region/FirstRoom/no collision"]
 mesh = SubResource("ArrayMesh_qp0dg")
 
-[node name="Lights" type="Node3D" parent="Root3D/Map/R2 Room 1/region"]
+[node name="Lights" type="Node3D" parent="Root/Map/R2 Room 1/region"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0612245, 4.044962, -37.709183)
 
-[node name="Neon Light ON" parent="Root3D/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
+[node name="Neon Light ON" parent="Root/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.56411, 0.9342389, 18.9171)
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light ON" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light ON" index="1"]
 light_color = Color(0.960784, 0.8, 0.643137, 1)
 light_energy = 1.325
 omni_range = 7.838
 omni_attenuation = 0.517633
 
-[node name="AudioStreamPlayer3D4" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light ON"]
+[node name="AudioStreamPlayer3D4" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light ON"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.21290016, -0.2892499, -0.041160107)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1243,27 +1258,27 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Neon Light2 OFF" parent="Root3D/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
+[node name="Neon Light2 OFF" parent="Root/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
 transform = Transform3D(-4.34365e-08, 0.111972, -0.993711, 4.89445e-09, 0.993711, 0.111972, 1, 0, -4.37114e-08, 0.547206, 1.10678, 18.922)
 
-[node name="entity_11_geometry" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light2 OFF" index="0"]
+[node name="entity_11_geometry" parent="Root/Map/R2 Room 1/region/Lights/Neon Light2 OFF" index="0"]
 transform = Transform3D(1, 1.11821e-08, -1.45449e-09, -1.11821e-08, 0.966725, -0.255817, -1.45449e-09, 0.255817, 0.966725, 0, -0.243489, 0.0559195)
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light2 OFF" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light2 OFF" index="1"]
 process_mode = 4
 visible = false
 omni_range = 7.005
 
-[node name="Neon Light3 ON" parent="Root3D/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
+[node name="Neon Light3 ON" parent="Root/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 2.44189, 0.417064, 11.352)
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light3 ON" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light3 ON" index="1"]
 light_color = Color(0.960784, 0.8, 0.643137, 1)
 light_energy = 1.325
 omni_range = 51.607
 omni_shadow_mode = 0
 
-[node name="AudioStreamPlayer3D3" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light3 ON"]
+[node name="AudioStreamPlayer3D3" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light3 ON"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.09531603, -0.21969175, -0.08964157)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1274,12 +1289,12 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Neon Light4 BROKEN" parent="Root3D/Map/R2 Room 1/region/Lights" node_paths=PackedStringArray("switchers") instance=ExtResource("17_p347e")]
+[node name="Neon Light4 BROKEN" parent="Root/Map/R2 Room 1/region/Lights" node_paths=PackedStringArray("switchers") instance=ExtResource("17_p347e")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 2.55179, 0.868781, -0.314922)
 script = ExtResource("8_b0rmg")
 switchers = [NodePath("AudioStreamPlayer3D"), NodePath("AudioStreamPlayer3D2"), NodePath("OmniLight3D")]
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN" index="1"]
 process_mode = 4
 visible = false
 light_color = Color(0.960784, 0.8, 0.643137, 1)
@@ -1287,7 +1302,7 @@ light_energy = 1.325
 omni_range = 7.838
 omni_attenuation = 0.517633
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.04324341, -0.3355484, -0.020042302)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1298,7 +1313,7 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.04324341, -0.3355484, -0.020042302)
 stream = ExtResource("20_42hx6")
 volume_db = -14.546
@@ -1309,16 +1324,16 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Neon Light5 ON" parent="Root3D/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
+[node name="Neon Light5 ON" parent="Root/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
 transform = Transform3D(2.5, 0, 0, 0, 2.49033, 0.219715, 0, -0.219715, 2.49033, -2.0527, 0.345016, -0.802448)
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light5 ON" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light5 ON" index="1"]
 light_color = Color(0.960784, 0.8, 0.643137, 1)
 light_energy = 1.325
 omni_range = 28.684
 omni_shadow_mode = 0
 
-[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light5 ON"]
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light5 ON"]
 transform = Transform3D(0.39999998, 0, 0, 0, 0.3984516, -0.035154294, 0, 0.035154294, 0.3984516, -0.33501184, -0.18888354, -0.030941963)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1329,16 +1344,16 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Neon Light6 ON" parent="Root3D/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
+[node name="Neon Light6 ON" parent="Root/Map/R2 Room 1/region/Lights" instance=ExtResource("17_p347e")]
 transform = Transform3D(-0.60544, 0.213175, -2.4162, 9.31882e-09, 2.49033, 0.219715, 2.42558, 0.0532097, -0.603097, 0.447303, 0.345016, -11.892)
 
-[node name="OmniLight3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light6 ON" index="1"]
+[node name="OmniLight3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light6 ON" index="1"]
 light_color = Color(0.960784, 0.8, 0.643137, 1)
 light_energy = 1.325
 omni_range = 28.684
 omni_shadow_mode = 0
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root3D/Map/R2 Room 1/region/Lights/Neon Light6 ON"]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Root/Map/R2 Room 1/region/Lights/Neon Light6 ON"]
 transform = Transform3D(-0.096870214, -3.814686e-09, 0.3880931, 0.034107823, 0.39845163, 0.008513525, -0.38659048, 0.03515435, -0.09649542, 0.19049644, -0.20216155, 0.119556904)
 stream = ExtResource("19_7uyu7")
 volume_db = -14.546
@@ -1349,78 +1364,78 @@ emission_angle_filter_attenuation_db = -13.1
 attenuation_filter_db = -8.6
 doppler_tracking = 2
 
-[node name="Details" type="Node3D" parent="Root3D/Map/R2 Room 1/region"]
+[node name="Details" type="Node3D" parent="Root/Map/R2 Room 1/region"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0612245, 4.044962, -37.709183)
 
-[node name="Long Crate" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("36_xu6tl")]
+[node name="Long Crate" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("36_xu6tl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.200534, -3.93406, -9.891682)
 
-[node name="Military sealed frreight crate" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("33_b6dqg")]
+[node name="Military sealed frreight crate" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("33_b6dqg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4507823, -3.9340606, 7.1518154)
 
-[node name="Moist Old crate" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("27_3xueb")]
+[node name="Moist Old crate" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("27_3xueb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.665714, -3.93406, 4.0836143)
 
-[node name="Old PC" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("28_c3q62")]
+[node name="Old PC" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("28_c3q62")]
 transform = Transform3D(0.26095304, -0.13922492, -0.9552591, 0.036688495, 0.9902608, -0.13430388, 0.964654, -1.1175871e-08, 0.26351953, -2.5242643, -3.9854589, 8.866072)
 
-[node name="Freight crate" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("32_562mn")]
+[node name="Freight crate" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("32_562mn")]
 transform = Transform3D(0.99809086, 0, 0.061762773, 0, 1, 0, -0.061762773, 0, 0.99809086, -3.3800268, -3.93406, -9.680126)
 
-[node name="Green Locker" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
+[node name="Green Locker" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
 transform = Transform3D(-1, 0, 8.742278e-08, 1.1218813e-08, 0.99173176, 0.12832826, -8.669994e-08, 0.12832826, -0.99173176, -2.8451152, -3.93406, 16.152845)
 
-[node name="Green Locker2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
+[node name="Green Locker2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
 transform = Transform3D(-1, 4.4357927e-16, 8.742278e-08, 1.4672656e-08, 0.9858151, 0.16783562, -8.618269e-08, 0.16783562, -0.9858151, -2.819693, -3.93406, 14.976879)
 
-[node name="Green Locker3" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
+[node name="Green Locker3" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
 transform = Transform3D(-0.98814785, 0.08806545, 0.12573087, 0.13341293, 0.0875737, 0.98718387, 0.07592611, 0.99225795, -0.09828488, -2.3736472, -3.5320225, 13.079292)
 
-[node name="Old Crate" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("66_8aihp")]
+[node name="Old Crate" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("66_8aihp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9347413, -3.9340603, 7.1515217)
 
-[node name="Shorter crate with a tarp" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("35_wt6jl")]
+[node name="Shorter crate with a tarp" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("35_wt6jl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0769987, -3.9340603, 4.9021225)
 
-[node name="Military sealed frreight crate2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("33_b6dqg")]
+[node name="Military sealed frreight crate2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("33_b6dqg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7360926, -3.93406, 15.306292)
 
-[node name="Labeled Small Cabinet" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("28_5rr7g")]
+[node name="Labeled Small Cabinet" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("28_5rr7g")]
 transform = Transform3D(0.9959002, 0, -0.090458766, 0, 1, 0, 0.090458766, 0, 0.9959002, 5.1207933, -3.9340599, 13.084114)
 
-[node name="Labeled Small Cabinet2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("28_5rr7g")]
+[node name="Labeled Small Cabinet2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("28_5rr7g")]
 transform = Transform3D(0.96243155, 0, -0.27152443, 0, 1, 0, 0.27152443, 0, 0.96243155, 5.118984, -2.9340599, 13.098625)
 
-[node name="Grey Right Hand Locker" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("27_j7irr")]
+[node name="Grey Right Hand Locker" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("27_j7irr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.997256, -3.9340599, 12.036806)
 
-[node name="Green Locker4" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
+[node name="Green Locker4" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("65_3laj5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0726314, -3.9340596, 10.85548)
 
-[node name="Small Cabinet" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("68_b8eb7")]
+[node name="Small Cabinet" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("68_b8eb7")]
 transform = Transform3D(0.9978953, 0, 0.06484581, 0, 1, 0, -0.06484581, 0, 0.9978953, 6.0903454, -1.3840599, 12.066412)
 
-[node name="Crate on a pellet" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("25_sqjov")]
+[node name="Crate on a pellet" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("25_sqjov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0906234, -3.9340599, 2.3044853)
 
-[node name="Crate on a pellet2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("25_sqjov")]
+[node name="Crate on a pellet2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("25_sqjov")]
 transform = Transform3D(0.990873, 0, -0.13479905, 0, 1, 0, 0.13479905, 0, 0.990873, 5.539001, -3.9340603, -2.6909904)
 
-[node name="Long Crate2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("36_xu6tl")]
+[node name="Long Crate2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("36_xu6tl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8314114, -3.93406, -0.23195648)
 
-[node name="Moist Old crate2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("27_3xueb")]
+[node name="Moist Old crate2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("27_3xueb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6220555, -3.93406, -6.9453583)
 
-[node name="Old PC2" parent="Root3D/Map/R2 Room 1/region/Details" instance=ExtResource("28_c3q62")]
+[node name="Old PC2" parent="Root/Map/R2 Room 1/region/Details" instance=ExtResource("28_c3q62")]
 transform = Transform3D(1, 0, 0, 0, 0.972431, 0.23319079, 0, -0.23319079, 0.972431, 4.445896, -3.93406, -4.896702)
 
-[node name="R3 Passage 1" type="Node3D" parent="Root3D/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
+[node name="R3 Passage 1" type="Node3D" parent="Root/Map" node_paths=PackedStringArray("region", "AdjacentRooms")]
 script = ExtResource("3_ggbu7")
 region = NodePath("region")
 AdjacentRooms = [NodePath("../R2 Room 1")]
 
-[node name="Area" type="Area3D" parent="Root3D/Map/R3 Passage 1"]
+[node name="Area" type="Area3D" parent="Root/Map/R3 Passage 1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.850185, 3.93406, -33.821842)
 monitorable = false
 priority = 1
@@ -1429,240 +1444,239 @@ reverb_bus_name = &"LargeRom"
 reverb_bus_amount = 0.43
 reverb_bus_uniformity = 0.11
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9228058, 5.090434, -5.384712)
 shape = SubResource("BoxShape3D_ak1id")
 debug_fill = false
 
-[node name="region" type="Node3D" parent="Root3D/Map/R3 Passage 1"]
+[node name="region" type="Node3D" parent="Root/Map/R3 Passage 1"]
 
-[node name="1st Passage" type="Node3D" parent="Root3D/Map/R3 Passage 1/region"]
+[node name="1st Passage" type="Node3D" parent="Root/Map/R3 Passage 1/region"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.75357, 8.905104, -38.504284)
 
-[node name="entity_24_geometry_col" type="StaticBody3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="entity_24_geometry_col" type="StaticBody3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 physics_material_override = SubResource("PhysicsMaterial_ak1id")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/entity_24_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/entity_24_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_jntv2")
 debug_fill = false
 
-[node name="entity_24_geometry" type="MeshInstance3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="entity_24_geometry" type="MeshInstance3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 mesh = SubResource("ArrayMesh_ao446")
 
-[node name="1stPS Door Frame" type="Node3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="1stPS Door Frame" type="Node3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.573353, -4.341001, -13.784176)
 
-[node name="entity_25_geometry" type="MeshInstance3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame"]
+[node name="entity_25_geometry" type="MeshInstance3D" parent="Root/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame"]
 mesh = SubResource("ArrayMesh_wsgh4")
 
-[node name="entity_25_geometry_col" type="StaticBody3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame"]
+[node name="entity_25_geometry_col" type="StaticBody3D" parent="Root/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame"]
 physics_material_override = SubResource("PhysicsMaterial_ak1id")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame/entity_25_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame/entity_25_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_f6gjt")
 debug_fill = false
 
-[node name="Area3D2" type="Area3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame" node_paths=PackedStringArray("doorRight", "doorLeft")]
+[node name="Area3D2" type="Area3D" parent="Root/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame" node_paths=PackedStringArray("doorRight", "doorLeft")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
 script = ExtResource("51_g7k2d")
 doorRight = NodePath("../../Door Right")
 doorLeft = NodePath("../../Door Left")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame/Area3D2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/1stPS Door Frame/Area3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18383026, 2.5042105, 0.89959717)
 shape = SubResource("BoxShape3D_q7hm1")
 
-[node name="Door Right" type="Node3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="Door Right" type="Node3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.246429, -5.9051037, -13.745716)
 
-[node name="entity_26_geometry" type="MeshInstance3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Right"]
+[node name="entity_26_geometry" type="MeshInstance3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Right"]
 mesh = SubResource("ArrayMesh_kn2fx")
 
-[node name="entity_26_geometry_col" type="StaticBody3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Right"]
+[node name="entity_26_geometry_col" type="StaticBody3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Right"]
 physics_material_override = SubResource("PhysicsMaterial_ak1id")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Right/entity_26_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Right/entity_26_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_vt24c")
 debug_fill = false
 
-[node name="Door Left" type="Node3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="Door Left" type="Node3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.246429, -5.9467707, -13.683216)
 
-[node name="entity_27_geometry" type="MeshInstance3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Left"]
+[node name="entity_27_geometry" type="MeshInstance3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Left"]
 mesh = SubResource("ArrayMesh_cwmse")
 
-[node name="entity_27_geometry_col" type="StaticBody3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Left"]
+[node name="entity_27_geometry_col" type="StaticBody3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Left"]
 physics_material_override = SubResource("PhysicsMaterial_ak1id")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Door Left/entity_27_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Door Left/entity_27_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_vvj1k")
 debug_fill = false
 
-[node name="Floor" type="Node3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="Floor" type="Node3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.246429, -9.155104, -6.745716)
 
-[node name="entity_28_geometry" type="MeshInstance3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Floor"]
+[node name="entity_28_geometry" type="MeshInstance3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Floor"]
 mesh = SubResource("ArrayMesh_fw1ea")
 
-[node name="entity_28_geometry_col" type="StaticBody3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Floor"]
+[node name="entity_28_geometry_col" type="StaticBody3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Floor"]
 physics_material_override = SubResource("PhysicsMaterial_ak1id")
 metadata/Sound = "stone"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Floor/entity_28_geometry_col"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Floor/entity_28_geometry_col"]
 shape = SubResource("ConcavePolygonShape3D_lwmam")
 debug_fill = false
 
-[node name="Node3D" type="Node3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage"]
+[node name="Node3D" type="Node3D" parent="Root/Map/R3 Passage 1/region/1st Passage"]
 
-[node name="_OmniLight3D_42712" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42712" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 20.25357, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42713" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42713" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 20.25357, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42714" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42714" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 20.25357, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42715" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42715" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 20.25357, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42716" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42716" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.753571, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42717" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42717" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.753571, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42718" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42718" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.753571, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42719" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42719" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.753571, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42720" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42720" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.253571, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42721" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42721" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.253571, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42722" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42722" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.253571, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42723" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42723" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.253571, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42724" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42724" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.0035706, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42725" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42725" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.0035706, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42726" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42726" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.0035706, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42727" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42727" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.0035706, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42728" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42728" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.2464294, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42729" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42729" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.2464294, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42730" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42730" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.2464294, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42731" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42731" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -4.2464294, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42732" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42732" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -11.496429, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42733" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42733" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -11.496429, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42734" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42734" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -11.496429, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42735" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42735" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -11.496429, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42736" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42736" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.74643, -4.1551037, 7.754284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42737" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42737" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.74643, -4.1551037, 2.004284)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42738" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42738" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.74643, -4.1551037, -3.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="_OmniLight3D_42739" type="OmniLight3D" parent="Root3D/Map/R3 Passage 1/region/1st Passage/Node3D"]
+[node name="_OmniLight3D_42739" type="OmniLight3D" parent="Root/Map/R3 Passage 1/region/1st Passage/Node3D"]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -17.74643, -4.1551037, -9.995716)
 light_bake_mode = 1
 omni_range = 10.0
 
-[node name="Test Cabinet" parent="Root3D/Map/R3 Passage 1/region" instance=ExtResource("68_b8eb7")]
+[node name="Test Cabinet" parent="Root/Map/R3 Passage 1/region" instance=ExtResource("68_b8eb7")]
 transform = Transform3D(-0.98638904, 0, -0.1644279, 0, 1, 0, 0.1644279, 0, -0.98638904, -54.431664, -2.3841858e-07, -43.917492)
 
-[node name="Area3D" type="Area3D" parent="Root3D/Map/R3 Passage 1/region/Test Cabinet" node_paths=PackedStringArray("playerObserver")]
+[node name="Area3D" type="Area3D" parent="Root/Map/R3 Passage 1/region/Test Cabinet"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.46056366, 0.3078699, -0.1014328)
 script = ExtResource("54_bdapq")
-playerObserver = NodePath("../../../../../Player/QMS/ViewportCont/SubViewport/Head/Camera3D")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Root3D/Map/R3 Passage 1/region/Test Cabinet/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Root/Map/R3 Passage 1/region/Test Cabinet/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29280853, 0.3119049, 0.12363052)
 shape = SubResource("BoxShape3D_g7k2d")
 
@@ -1677,10 +1691,9 @@ texture_path = "res://HL_Textures"
 [node name="Rail" type="Node3D" parent="TBLoader"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 39.166668, 84.083336)
 
-[editable path="Root3D/Player"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light ON"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light2 OFF"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light3 ON"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light5 ON"]
-[editable path="Root3D/Map/R2 Room 1/region/Lights/Neon Light6 ON"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light ON"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light2 OFF"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light3 ON"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light4 BROKEN"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light5 ON"]
+[editable path="Root/Map/R2 Room 1/region/Lights/Neon Light6 ON"]

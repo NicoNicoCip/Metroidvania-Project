@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://007uqjkj05gh"]
+[gd_scene load_steps=13 format=3 uid="uid://007uqjkj05gh"]
 
 [ext_resource type="Script" uid="uid://bowmnmy5jspkx" path="res://src/main/core/motion/PlayerController.cs" id="1_d3pck"]
 [ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="2_8lesa"]
@@ -15,6 +15,7 @@ albedo_color = Color(0.2647876, 0.6126055, 0.8571388, 1)
 material = SubResource("StandardMaterial3D_yc87k")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
+friction = 0.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o767q"]
 
@@ -25,18 +26,26 @@ material = SubResource("StandardMaterial3D_yc87k")
 [sub_resource type="BoxShape3D" id="BoxShape3D_80goq"]
 size = Vector3(1.1, 2.2, 1.12)
 
-[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "crouchCeilingCheck", "bodyCollision", "rigidBody", "groundCast", "slopeCast")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1djsn"]
+
+[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "crouchCeilingCheck", "bodyCollision", "rigidBody", "groundCast", "slopeCast", "platformDetectionCast")]
 process_mode = 3
 script = ExtResource("1_d3pck")
 fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/Control/Panel Container/Panel/RichTextLabel")
+dashForce = 18.0
+jumpForce = 280.0
 head = NodePath("Motion Controller/ViewportCont/SubViewport/Head")
 orientation = NodePath("Motion Controller/Rig/Orientation")
 bodyMesh = NodePath("Motion Controller/Rig")
 crouchCeilingCheck = NodePath("Motion Controller/Rig/CrouchBoxcast")
 bodyCollision = NodePath("Motion Controller/Rig/Collider")
+maxSpeed = 6.0
+maxAirSpeed = 8.0
+groundDrag = 6.0
 rigidBody = NodePath("Motion Controller/Rig")
 groundCast = NodePath("Motion Controller/Rig/GroundRaycast")
 slopeCast = NodePath("Motion Controller/Rig/SlopeRaycast")
+platformDetectionCast = NodePath("Motion Controller/Rig/PlatformDetectionCast")
 
 [node name="Player Items" type="Node3D" parent="."]
 
@@ -176,3 +185,7 @@ shape = SubResource("SphereShape3D_3byqp")
 [node name="ContactCast" type="ShapeCast3D" parent="Motion Controller/Rig"]
 shape = SubResource("BoxShape3D_80goq")
 target_position = Vector3(0, 0, 0)
+
+[node name="PlatformDetectionCast" type="ShapeCast3D" parent="Motion Controller/Rig"]
+shape = SubResource("BoxShape3D_1djsn")
+collision_mask = 8
