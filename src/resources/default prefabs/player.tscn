@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://007uqjkj05gh"]
+[gd_scene load_steps=11 format=3 uid="uid://007uqjkj05gh"]
 
 [ext_resource type="Script" uid="uid://bowmnmy5jspkx" path="res://src/main/core/motion/PlayerController.cs" id="1_d3pck"]
 [ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="2_8lesa"]
@@ -9,43 +9,39 @@ size = Vector2(0.17, 0.4)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rmk8t"]
 albedo_color = Color(0.2647876, 0.6126055, 0.8571388, 1)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
+friction = 0.0
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yc87k"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fre8c"]
 material = SubResource("StandardMaterial3D_yc87k")
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
-friction = 0.0
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o767q"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_7sf32"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1djsn"]
+size = Vector3(0.6, 0.165, 0.6)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3byqp"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_80goq"]
-size = Vector3(1.1, 2.2, 1.12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1djsn"]
-
-[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "crouchCeilingCheck", "bodyCollision", "rigidBody", "groundCast", "slopeCast", "platformDetectionCast")]
+[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "bodyCollision", "crouchCeilingCheck", "rigidBody", "groundCast", "slopeCast", "waterDetectionArea")]
 process_mode = 3
 script = ExtResource("1_d3pck")
 fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/Control/Panel Container/Panel/RichTextLabel")
 dashForce = 18.0
 jumpForce = 280.0
+crouchScale = 0.2
+crouchSpeed = 4.0
 head = NodePath("Motion Controller/ViewportCont/SubViewport/Head")
 orientation = NodePath("Motion Controller/Rig/Orientation")
-bodyMesh = NodePath("Motion Controller/Rig")
-crouchCeilingCheck = NodePath("Motion Controller/Rig/CrouchBoxcast")
+bodyMesh = NodePath("Motion Controller/Rig/Body/Mesh")
 bodyCollision = NodePath("Motion Controller/Rig/Collider")
-maxSpeed = 6.0
-maxAirSpeed = 8.0
-groundDrag = 6.0
+crouchCeilingCheck = NodePath("Motion Controller/Rig/CrouchBoxcast")
+maxSpeed = 8.0
 rigidBody = NodePath("Motion Controller/Rig")
 groundCast = NodePath("Motion Controller/Rig/GroundRaycast")
 slopeCast = NodePath("Motion Controller/Rig/SlopeRaycast")
-platformDetectionCast = NodePath("Motion Controller/Rig/PlatformDetectionCast")
+waterDetectionArea = NodePath("Motion Controller/Rig/WaterBoxcast")
 
 [node name="Player Items" type="Node3D" parent="."]
 
@@ -75,7 +71,8 @@ render_target_update_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 rotation_order = 0
 script = ExtResource("2_8lesa")
-toFollow = NodePath("../../../Rig/Cam Holder")
+toFollow = NodePath("../../../Rig/Body/Mesh/Cam Holder")
+lerp = 0.5
 
 [node name="CameraHandler" type="Node3D" parent="Motion Controller/ViewportCont/SubViewport/Head"]
 
@@ -130,19 +127,6 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Body" type="Node3D" parent="Motion Controller" node_paths=PackedStringArray("toFollow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("2_8lesa")
-toFollow = NodePath("../Rig")
-
-[node name="Mesh" type="MeshInstance3D" parent="Motion Controller/Body"]
-mesh = SubResource("CapsuleMesh_fre8c")
-skeleton = NodePath("../../../..")
-
-[node name="FootstepsEngine" type="Node3D" parent="Motion Controller/Body"]
-
-[node name="Walk" type="AudioStreamPlayer3D" parent="Motion Controller/Body"]
-
 [node name="Rig" type="RigidBody3D" parent="Motion Controller"]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -153,11 +137,21 @@ lock_rotation = true
 continuous_cd = true
 metadata/PlayerCollider = true
 
+[node name="Body" type="Node3D" parent="Motion Controller/Rig"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Motion Controller/Rig/Body"]
+mesh = SubResource("CapsuleMesh_fre8c")
+skeleton = NodePath("../../../../..")
+
+[node name="Cam Holder" type="Node3D" parent="Motion Controller/Rig/Body/Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="FootstepsEngine" type="Node3D" parent="Motion Controller/Rig/Body"]
+
+[node name="Walk" type="AudioStreamPlayer3D" parent="Motion Controller/Rig/Body"]
+
 [node name="Collider" type="CollisionShape3D" parent="Motion Controller/Rig"]
 shape = SubResource("CapsuleShape3D_o767q")
-
-[node name="Cam Holder" type="Node3D" parent="Motion Controller/Rig"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Orientation" type="Node3D" parent="Motion Controller/Rig"]
 
@@ -171,21 +165,13 @@ target_position = Vector3(0, -1.5, 0)
 debug_shape_custom_color = Color(0.972549, 0.372549, 0.286275, 1)
 
 [node name="CrouchBoxcast" type="ShapeCast3D" parent="Motion Controller/Rig"]
-shape = SubResource("SphereShape3D_7sf32")
-target_position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_1djsn")
+target_position = Vector3(0, 0.95, 0)
 debug_shape_custom_color = Color(1, 0.32549, 0.431373, 1)
 
 [node name="WaterBoxcast" type="Area3D" parent="Motion Controller/Rig"]
-collision_mask = 8
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Motion Controller/Rig/WaterBoxcast"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("SphereShape3D_3byqp")
-
-[node name="ContactCast" type="ShapeCast3D" parent="Motion Controller/Rig"]
-shape = SubResource("BoxShape3D_80goq")
-target_position = Vector3(0, 0, 0)
-
-[node name="PlatformDetectionCast" type="ShapeCast3D" parent="Motion Controller/Rig"]
-shape = SubResource("BoxShape3D_1djsn")
-collision_mask = 8

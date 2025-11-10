@@ -13,11 +13,11 @@ public abstract partial class MotionController : Node3D {
     [Export] protected float maxAirSpeed = 12.0f;
     [Export] protected float groundDrag = 8.0f;
     [Export] protected float airDrag = 0.0f;
-    
+
     [ExportGroup("Physics Settings")]
     [Export] protected float gravityScale = 6.0f;
     [Export] protected float maxSlopeAngle = 45.0f;
-    
+
     [ExportGroup("Required References")]
     [Export] protected RigidBody3D rigidBody;
     [Export] protected RayCast3D groundCast;
@@ -27,7 +27,6 @@ public abstract partial class MotionController : Node3D {
     [ExportGroup("Optional References")]
     [Export] protected RayCast3D slopeCast;
     [Export] protected Area3D waterDetectionArea;
-    [Export] protected ShapeCast3D platformDetectionCast;
     #endregion
 
     #region Protected State
@@ -37,7 +36,7 @@ public abstract partial class MotionController : Node3D {
     protected bool inWater;
     protected bool onSlope;
     protected float delta;
-    
+
     private Node initialParent;
     private InitialSettings cachedSettings;
     private PhysicsModifiers activeModifiers;
@@ -49,7 +48,7 @@ public abstract partial class MotionController : Node3D {
         CacheInitialSettings();
         SetupOptionalFeatures();
         initialParent = GetParent();
-        
+
         OnReady();
     }
 
@@ -81,7 +80,7 @@ public abstract partial class MotionController : Node3D {
             waterDetectionArea.BodyEntered += OnWaterEntered;
             waterDetectionArea.BodyExited += OnWaterExited;
         }
-        
+
         // Ensure RigidBody is set up correctly for motion control
         if (rigidBody != null) {
             // Disable built-in gravity - we'll handle it manually for better control
@@ -106,15 +105,16 @@ public abstract partial class MotionController : Node3D {
         if (rigidBody == null) return;
 
         this.delta = (float)delta;
-        
+
         UpdatePhysicsState();
-        
+
         Vector3 wishDir = GetWishDirection();
-        
+
         OnPhysicsUpdate(wishDir);
-        
+
         ApplyDrag();
         ApplyMovement(wishDir);
+
         HandleMovingPlatforms();
     }
 
@@ -127,11 +127,11 @@ public abstract partial class MotionController : Node3D {
     private void UpdatePhysicsState() {
         grounded = groundCast != null && groundCast.IsColliding();
         onSlope = CheckIfOnSlope();
-        
+
         if (onSlope) {
             grounded = true;
         }
-        
+
         // Check for surface physics modifiers
         if (grounded) {
             DetectSurfaceProperties();
@@ -153,14 +153,14 @@ public abstract partial class MotionController : Node3D {
     private void ApplyMovement(Vector3 wishDir) {
         Vector3 velocity = rigidBody.LinearVelocity;
         Vector3 targetVel = new();
-        
+
         if (onSlope && slopeCast != null) {
             wishDir = ProjectOnPlane(
-                wishDir, 
+                wishDir,
                 slopeCast.GetCollisionNormal()
             ).Normalized();
         }
-        
+
         if (grounded) {
             targetVel = UpdateVelocityGround(wishDir, velocity);
         } else if (inWater) {
@@ -177,7 +177,7 @@ public abstract partial class MotionController : Node3D {
     private Vector3 UpdateVelocityGround(Vector3 wishDir, Vector3 velocity) {
         float effectiveMaxSpeed = GetEffectiveMaxSpeed();
         float effectiveAccel = GetEffectiveAcceleration();
-        
+
         float currentSpeed = velocity.Dot(wishDir);
         float addSpeed = Mathf.Clamp(effectiveMaxSpeed - currentSpeed, 0, effectiveAccel * delta);
         return velocity + addSpeed * wishDir;
@@ -187,20 +187,20 @@ public abstract partial class MotionController : Node3D {
         float effectiveAirSpeed = GetEffectiveAirSpeed();
         float effectiveAccel = GetEffectiveAcceleration();
         float effectiveGravity = GetEffectiveGravityScale();
-        
+
         // Apply air acceleration
         float currentSpeed = velocity.Dot(wishDir);
         float addSpeed = Mathf.Clamp(effectiveAirSpeed - currentSpeed, 0, effectiveAccel * delta);
         velocity += addSpeed * wishDir;
-        
+
         // Apply gravity manually (pulling down towards world origin)
         // Using ProjectSettings.GetSetting to get the global gravity vector
         float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
         Vector3 gravityDir = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
-        
+
         // Apply gravity with our scale
         velocity += gravityDir * gravity * effectiveGravity * delta;
-        
+
         return velocity;
     }
 
@@ -288,30 +288,21 @@ public abstract partial class MotionController : Node3D {
 
     #region Moving Platform Support
     private void HandleMovingPlatforms() {
-        if (platformDetectionCast == null || !grounded) return;
+        Node3D contactCollider = null;
+        if (grounded) contactCollider = (Node3D)groundCast.GetCollider();
 
-        Node3D platformNode = GetPlatformNode();
-
-        if (platformNode != null) {
-            if (GetParent() == initialParent) {
-                CallDeferred(nameof(ReparentToNode), platformNode);
+        if (contactCollider != null) {
+            if (groundCast.IsColliding() && GetParent() == initialParent) {
+                CallDeferred(nameof(DeferredReparent), contactCollider);
+            } else if (groundCast.IsColliding() 
+            && contactCollider != GetParent()) {
+                CallDeferred(nameof(DeferredReparent), initialParent);
             }
-        } else if (GetParent() != initialParent) {
-            CallDeferred(nameof(ReparentToNode), initialParent);
         }
     }
 
-    private Node3D GetPlatformNode() {
-        if (platformDetectionCast == null || !platformDetectionCast.IsColliding()) {
-            return null;
-        }
-
-        var collider = platformDetectionCast.GetCollider(0);
-        return collider as Node3D;
-    }
-
-    private void ReparentToNode(Node newParent) {
-        if (newParent != null && IsInstanceValid(newParent) && newParent != GetParent()) {
+    private void DeferredReparent(Node newParent) {
+        if (newParent != null && IsInstanceValid(newParent)) {
             Reparent(newParent, true);
         }
     }
@@ -432,11 +423,11 @@ public abstract partial class MotionController : Node3D {
     public Variant GetGroundSurfaceMetadata(string key) {
         var surface = GetGroundSurface();
         if (surface == null) return default;
-        
+
         if (surface is Node node && node.HasMeta(key)) {
             return node.GetMeta(key);
         }
-        
+
         return default;
     }
 

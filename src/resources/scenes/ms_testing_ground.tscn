@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c26av2fiq20t4"]
+[gd_scene load_steps=21 format=3 uid="uid://c26av2fiq20t4"]
 
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_3kg6d"]
 [ext_resource type="Script" uid="uid://bb2od1kerafoj" path="res://src/main/core/motion/Ball.cs" id="2_3kg6d"]
@@ -54,11 +54,17 @@ friction = 0.07
 [sub_resource type="SphereShape3D" id="SphereShape3D_wtrjt"]
 radius = 2.0
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tdp6p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_s8gy2"]
+size = Vector3(5, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rs24v"]
+size = Vector3(5, 1, 5)
+
 [node name="MS Testing Ground" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_3kg6d")]
-dashForce = 18.0
-jumpForce = 280.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_x1sgw")
@@ -105,3 +111,13 @@ shape = SubResource("SphereShape3D_wtrjt")
 
 [node name="RayCast3D" type="RayCast3D" parent="Ball/RigidBody3D"]
 target_position = Vector3(0, -0.6, 0)
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+physics_material_override = SubResource("PhysicsMaterial_tdp6p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_s8gy2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_rs24v")

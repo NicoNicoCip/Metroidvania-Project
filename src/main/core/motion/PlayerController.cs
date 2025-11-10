@@ -55,9 +55,13 @@ public partial class PlayerController : Entity {
             INPUT_MOVE_RIGHT
         );
 
-        float verticalMap =
-        (Input.IsActionPressed(INPUT_JUMP) ? 1.0f : 0.0f) -
-        (Input.IsActionPressed(INPUT_CROUCH) ? 2.0f : 0.0f);
+
+        float verticalMap = 0.0f;
+        
+        if (Input.IsActionPressed(INPUT_CROUCH))
+            verticalMap = -1.0f;
+        else if (Input.IsActionPressed(INPUT_JUMP))
+            verticalMap = 1.0f;
 
         tensors = new Vector3(inputMap.X, verticalMap, inputMap.Y);
     }
