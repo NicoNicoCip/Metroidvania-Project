@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://nysix0thd8pr"
-path="res://.godot/imported/footstep_metal_crouch_5.wav-2065655496370c964c21794afcfa0a39.sample"
+path="res://.godot/imported/walk_metal.wav-67ca5d1a397b99d30aeb8ae0b49f6851.sample"
 
 [deps]
 
-source_file="res://src/resources/sounds/footstep_metal_crouch_5.wav"
-dest_files=["res://.godot/imported/footstep_metal_crouch_5.wav-2065655496370c964c21794afcfa0a39.sample"]
+source_file="res://src/resources/sounds/walk_metal.wav"
+dest_files=["res://.godot/imported/walk_metal.wav-67ca5d1a397b99d30aeb8ae0b49f6851.sample"]
 
 [params]
 

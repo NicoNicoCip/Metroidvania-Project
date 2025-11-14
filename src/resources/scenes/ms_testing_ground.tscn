@@ -1,8 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://c26av2fiq20t4"]
+[gd_scene load_steps=25 format=3 uid="uid://c26av2fiq20t4"]
 
 [ext_resource type="PackedScene" uid="uid://007uqjkj05gh" path="res://src/resources/default prefabs/player.tscn" id="1_3kg6d"]
 [ext_resource type="Script" uid="uid://bb2od1kerafoj" path="res://src/main/core/motion/Ball.cs" id="2_3kg6d"]
-[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="3_ovx7p"]
+[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/motion/FollowNode.cs" id="3_ovx7p"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_x1sgw"]
 size = Vector2(100, 100)
@@ -42,8 +42,6 @@ volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.6955032, 0.6955031, 0.6955031, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_3kg6d"]
-radius = 2.0
-height = 4.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ovx7p"]
 albedo_color = Color(0.92645407, 0.1987628, 0, 1)
@@ -52,9 +50,12 @@ albedo_color = Color(0.92645407, 0.1987628, 0, 1)
 friction = 0.07
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wtrjt"]
-radius = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ovx7p"]
+radius = 0.2
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tdp6p"]
+friction = 0.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_s8gy2"]
 size = Vector3(5, 1, 5)
@@ -62,18 +63,33 @@ size = Vector3(5, 1, 5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rs24v"]
 size = Vector3(5, 1, 5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_x1sgw"]
+size = Vector3(8, 8, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tdp6p"]
+size = Vector3(8, 8, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s8gy2"]
+transparency = 1
+cull_mode = 2
+shading_mode = 2
+albedo_color = Color(0, 1.3058418, 2.0014553, 0.19607843)
+
 [node name="MS Testing Ground" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_3kg6d")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Floor" type="Node3D" parent="."]
+
+[node name="Floor Mesh" type="MeshInstance3D" parent="Floor"]
 mesh = SubResource("PlaneMesh_x1sgw")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_tdp6p")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="Floor"]
 physics_material_override = SubResource("PhysicsMaterial_x1sgw")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/Floor"]
 shape = SubResource("BoxShape3D_ovx7p")
 
 [node name="Enviorment" type="Node" parent="."]
@@ -86,13 +102,13 @@ transform = Transform3D(0.894414, 0.402953, -0.194044, 0.098648, 0.245439, 0.964
 shadow_enabled = true
 directional_shadow_max_distance = 230.0
 
-[node name="Ball" type="Node3D" parent="." node_paths=PackedStringArray("rigidBody", "groundCast")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3028865, 2.169806, -11.424171)
+[node name="Ball" type="Node3D" parent="." node_paths=PackedStringArray("rigidBody", "groundCast", "waterDetectionArea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.203533, 8.897032, 0.72620773)
 script = ExtResource("2_3kg6d")
 maxSpeed = 50.0
-groundDrag = 2.0
 rigidBody = NodePath("RigidBody3D")
 groundCast = NodePath("RigidBody3D/RayCast3D")
+waterDetectionArea = NodePath("RigidBody3D/WaterBoxcast")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ball" node_paths=PackedStringArray("toFollow")]
 mesh = SubResource("SphereMesh_3kg6d")
@@ -103,7 +119,6 @@ toFollow = NodePath("../RigidBody3D")
 lerp = 0.25
 
 [node name="RigidBody3D" type="RigidBody3D" parent="Ball"]
-mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_ovx7p")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ball/RigidBody3D"]
@@ -112,12 +127,43 @@ shape = SubResource("SphereShape3D_wtrjt")
 [node name="RayCast3D" type="RayCast3D" parent="Ball/RigidBody3D"]
 target_position = Vector3(0, -0.6, 0)
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+[node name="WaterBoxcast" type="Area3D" parent="Ball/RigidBody3D"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ball/RigidBody3D/WaterBoxcast"]
+shape = SubResource("SphereShape3D_ovx7p")
+
+[node name="Crouch" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
 physics_material_override = SubResource("PhysicsMaterial_tdp6p")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Crouch"]
 mesh = SubResource("BoxMesh_s8gy2")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Crouch"]
 shape = SubResource("BoxShape3D_rs24v")
+
+[node name="Crouch" type="StaticBody3D" parent="Crouch"]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 7, -1.2209489, 0)
+physics_material_override = SubResource("PhysicsMaterial_tdp6p")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Crouch/Crouch"]
+mesh = SubResource("BoxMesh_s8gy2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Crouch/Crouch"]
+shape = SubResource("BoxShape3D_rs24v")
+
+[node name="Water" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 4, 0)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water"]
+shape = SubResource("BoxShape3D_x1sgw")
+debug_color = Color(0, 3.0739503, 3.4277668, 0.41960785)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Water"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0)
+mesh = SubResource("BoxMesh_tdp6p")
+surface_material_override/0 = SubResource("StandardMaterial3D_s8gy2")

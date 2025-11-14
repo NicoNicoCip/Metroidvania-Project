@@ -26,6 +26,7 @@ public abstract partial class MotionController : Node3D {
     #region Optional References
     [ExportGroup("Optional References")]
     [Export] protected RayCast3D slopeCast;
+    [Export] protected ShapeCast3D contactCast;
     [Export] protected Area3D waterDetectionArea;
     #endregion
 
@@ -36,6 +37,7 @@ public abstract partial class MotionController : Node3D {
     protected bool inWater;
     protected bool onSlope;
     protected float delta;
+    protected bool ignoreDragThisFrame = false;
 
     private Node initialParent;
     private InitialSettings cachedSettings;
@@ -111,11 +113,12 @@ public abstract partial class MotionController : Node3D {
         Vector3 wishDir = GetWishDirection();
 
         OnPhysicsUpdate(wishDir);
-
+        
+        ApplyModifications();
         ApplyDrag();
         ApplyMovement(wishDir);
 
-        HandleMovingPlatforms();
+        HandleMovingBodies();
     }
 
     /// <summary>
@@ -152,7 +155,7 @@ public abstract partial class MotionController : Node3D {
     #region Core Quake Physics
     private void ApplyMovement(Vector3 wishDir) {
         Vector3 velocity = rigidBody.LinearVelocity;
-        Vector3 targetVel = new();
+        Vector3 targetVel;
 
         if (onSlope && slopeCast != null) {
             wishDir = ProjectOnPlane(
@@ -212,7 +215,11 @@ public abstract partial class MotionController : Node3D {
     }
 
     private void ApplyDrag() {
-        // Determine current drag based on state
+        if (ignoreDragThisFrame) {
+            ignoreDragThisFrame = false;
+            return;
+        }
+
         if (grounded || onSlope) {
             currentDrag = GetEffectiveGroundDrag();
         } else if (inWater) {
@@ -221,7 +228,6 @@ public abstract partial class MotionController : Node3D {
             currentDrag = airDrag;
         }
 
-        // Apply friction to horizontal velocity
         if (currentDrag > 0) {
             Vector3 velocity = rigidBody.LinearVelocity;
             ApplyFriction(ref velocity);
@@ -239,6 +245,10 @@ public abstract partial class MotionController : Node3D {
         if (dampAmount < 0) dampAmount = 0;
 
         velocity *= dampAmount / speed;
+    }
+
+    private void ApplyModifications() {
+        
     }
     #endregion
 
@@ -269,32 +279,32 @@ public abstract partial class MotionController : Node3D {
 
     #region Water Handling
     private void OnWaterEntered(Node3D body) {
-        if (body == rigidBody) {
-            inWater = true;
-            OnEnteredWater();
-        }
+        inWater = true;
+        OnEnteredWater();
     }
 
     private void OnWaterExited(Node3D body) {
-        if (body == rigidBody) {
-            inWater = false;
-            OnExitedWater();
-        }
+        inWater = false;
+        OnExitedWater();
     }
 
     protected virtual void OnEnteredWater() { }
+
     protected virtual void OnExitedWater() { }
+
     #endregion
 
-    #region Moving Platform Support
-    private void HandleMovingPlatforms() {
+    #region Moving Body Support
+    private void HandleMovingBodies() {
+        if (contactCast == null) return;
         Node3D contactCollider = null;
-        if (grounded) contactCollider = (Node3D)groundCast.GetCollider();
+        if(contactCast.IsColliding()) 
+            contactCollider = (Node3D)contactCast.GetCollider(0);
 
         if (contactCollider != null) {
-            if (groundCast.IsColliding() && GetParent() == initialParent) {
+            if (contactCast.IsColliding() && GetParent() == initialParent) {
                 CallDeferred(nameof(DeferredReparent), contactCollider);
-            } else if (groundCast.IsColliding() 
+            } else if (contactCast.IsColliding()
             && contactCollider != GetParent()) {
                 CallDeferred(nameof(DeferredReparent), initialParent);
             }
@@ -472,7 +482,7 @@ public abstract partial class MotionController : Node3D {
     #endregion
 
     #region Data Structures
-    private struct InitialSettings {
+    public struct InitialSettings {
         public float maxSpeed;
         public float maxAirSpeed;
         public float groundDrag;
@@ -480,7 +490,7 @@ public abstract partial class MotionController : Node3D {
         public float gravityScale;
     }
 
-    private struct PhysicsModifiers {
+    public struct PhysicsModifiers {
         public float dragMultiplier;
         public float speedMultiplier;
         public float accelerationMultiplier;
@@ -496,6 +506,36 @@ public abstract partial class MotionController : Node3D {
             dragOverride = null;
             speedOverride = null;
         }
+    }
+    #endregion
+
+    #region Getters
+    public bool isGrounded() {
+        return grounded;
+    }
+
+    public bool isInWater() {
+        return inWater;
+    }
+
+    public bool isOnSlope() {
+        return onSlope;
+    }
+
+    public InitialSettings getCachedSettigns() {
+        return cachedSettings;
+    }
+
+    public PhysicsModifiers getActiveSettings() {
+        return activeModifiers;
+    }
+
+    public RayCast3D getGroundCast() {
+        return groundCast;
+    }
+
+    public RigidBody3D getRigidBody() {
+        return rigidBody;
     }
     #endregion
 }

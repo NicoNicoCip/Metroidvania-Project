@@ -116,7 +116,7 @@ public abstract partial class Entity : MotionController {
 
         // Underwater jumping
         if (inWater && tensors.Y > 0) {
-            ApplyForce(rigidBody.Basis.Y * jumpForce * 1.5f);
+            ApplyForce(rigidBody.Basis.Y * jumpForce * 0.1f);
             return;
         }
 
@@ -150,7 +150,7 @@ public abstract partial class Entity : MotionController {
 
     #region Crouch System
     private void HandleCrouchInput() {
-        if (tensors.Y < 0 && !isCrouching) {
+        if (tensors.Y < 0) {
             StartCrouch();
         }
 
@@ -164,37 +164,61 @@ public abstract partial class Entity : MotionController {
 
         // Crouch swimming (move down in water)
         if (isCrouching && inWater) {
-            ApplyForce(-rigidBody.Basis.Y * jumpForce);
+            ApplyForce(-rigidBody.Basis.Y * jumpForce * 0.1f);
         }
     }
 
     private void StartCrouch() {
         if (bodyMesh == null || bodyCollision == null) return;
-
         isCrouching = true;
-        bodyMesh.Scale = new Vector3(bodyMesh.Scale.X, crouchScale, bodyMesh.Scale.Z);
-        bodyCollision.Shape.Set("height", originalShapeScaleY * crouchScale);
+
+        if (grounded) {
+            bodyMesh.Scale = new Vector3(
+                bodyMesh.Scale.X,
+                crouchScale,
+                bodyMesh.Scale.Z
+            );
+            bodyCollision.Shape.Set(
+                "height",
+                originalShapeScaleY * crouchScale
+            );
+        }
+
         maxSpeed = crouchSpeed;
+
+        if (grounded && !inWater) {
+            ApplyForce(-rigidBody.Basis.Y * jumpForce);
+        }
     }
 
     private void StopCrouch() {
+
         if (bodyMesh == null || bodyCollision == null) return;
 
         isCrouching = false;
         wantsToUncrouch = false;
-        bodyMesh.Scale = new Vector3(bodyMesh.Scale.X, originalBodyScaleY, bodyMesh.Scale.Z);
-        bodyCollision.Shape.Set("height", originalShapeScaleY);
-        maxSpeed = originalMaxSpeed;
 
-        // Push player down slightly to prevent floating
-        if (grounded) {
-            ApplyForce(Vector3.Down * jumpForce * 2);
-        }
+        bodyMesh.Scale = new Vector3(
+            bodyMesh.Scale.X,
+            originalBodyScaleY,
+            bodyMesh.Scale.Z
+        );
+        bodyCollision.Shape.Set(
+            "height",
+            originalShapeScaleY
+        );
+        maxSpeed = originalMaxSpeed;
     }
 
     private bool CanUncrouch() {
         if (crouchCeilingCheck == null) return true;
         return !crouchCeilingCheck.IsColliding();
+    }
+    #endregion
+
+    #region Getters
+    public Vector3 getTensors() {
+        return tensors;
     }
     #endregion
 }
