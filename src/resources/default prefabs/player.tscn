@@ -1,19 +1,68 @@
-[gd_scene load_steps=18 format=3 uid="uid://007uqjkj05gh"]
+[gd_scene load_steps=25 format=3 uid="uid://007uqjkj05gh"]
 
 [ext_resource type="Script" uid="uid://bowmnmy5jspkx" path="res://src/main/core/motion/PlayerController.cs" id="1_d3pck"]
 [ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/motion/FollowNode.cs" id="2_8lesa"]
 [ext_resource type="Script" uid="uid://d4lj2y1jhxubl" path="res://src/main/core/player/ItemManager.cs" id="2_d3pck"]
+[ext_resource type="Script" uid="uid://lfjusl802g4o" path="res://src/main/core/player/Item.cs" id="3_65ygi"]
 [ext_resource type="Script" uid="uid://ol4sh35pmc3w" path="res://src/main/core/player/FootstepsEngine.cs" id="3_cn62v"]
 [ext_resource type="AudioStream" uid="uid://cbdd7ty74sa2p" path="res://src/resources/sounds/walk_default.wav" id="4_4ktr0"]
 [ext_resource type="Script" uid="uid://65bei65inuqm" path="res://src/main/core/player/ItemDisplay.cs" id="4_65ygi"]
 [ext_resource type="AudioStream" uid="uid://nysix0thd8pr" path="res://src/resources/sounds/walk_metal.wav" id="5_1no8l"]
+[ext_resource type="Script" uid="uid://jhka5kr41fvj" path="res://src/main/core/world/ToastManager.cs" id="5_d3pck"]
 [ext_resource type="AudioStream" uid="uid://ciso6451ly0sl" path="res://src/resources/sounds/walk_grass.wav" id="6_8lesa"]
+
+[sub_resource type="Resource" id="Resource_65ygi"]
+script = ExtResource("3_65ygi")
+name = "blue key"
+metadata/_custom_type_script = "uid://lfjusl802g4o"
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7ekwg"]
 size = Vector2(0.17, 0.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rmk8t"]
 albedo_color = Color(0.2647876, 0.6126055, 0.8571388, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lesa"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3pck"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.078431375, 0.101960786, 0.18431373, 0.5137255)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_65ygi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ekwg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.078431375, 0.101960786, 0.18431373, 0.5137255)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 8.0
+expand_margin_right = 8.0
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
 friction = 0.0
@@ -37,7 +86,7 @@ radius = 0.2
 [node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "bodyCollision", "crouchCeilingCheck", "rigidBody", "groundCast", "slopeCast", "contactCast", "waterDetectionArea")]
 process_mode = 3
 script = ExtResource("1_d3pck")
-fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/Panel Container/Panel/RichTextLabel")
+fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/FPS Counter/Text")
 dashForce = 12.0
 jumpForce = 280.0
 crouchScale = 0.6
@@ -57,6 +106,7 @@ waterDetectionArea = NodePath("Motion Controller/Rig/WaterBoxcast")
 
 [node name="Player Items" type="Node3D" parent="."]
 script = ExtResource("2_d3pck")
+items = Array[ExtResource("3_65ygi")]([SubResource("Resource_65ygi")])
 
 [node name="Motion Controller" type="Node3D" parent="."]
 
@@ -111,7 +161,7 @@ mesh = SubResource("PlaneMesh_7ekwg")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_rmk8t")
 
-[node name="Panel Container" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport"]
+[node name="FPS Counter" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport"]
 custom_minimum_size = Vector2(40, 40)
 offset_left = 32.0
 offset_top = 32.0
@@ -119,20 +169,20 @@ offset_right = 72.0
 offset_bottom = 72.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8lesa")
 
-[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/Panel Container"]
+[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/FPS Counter"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d3pck")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/Panel Container/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Text" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/FPS Counter"]
+layout_mode = 2
 text = "FPS"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel Container2" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport"]
+[node name="Toast Manager" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport" node_paths=PackedStringArray("textLabel")]
 custom_minimum_size = Vector2(40, 40)
 anchors_preset = 7
 anchor_left = 0.5
@@ -147,23 +197,16 @@ grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 2
 size_flags_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_65ygi")
+script = ExtResource("5_d3pck")
+textLabel = NodePath("Text")
 
-[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/Panel Container2"]
+[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/Toast Manager"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ekwg")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/Panel Container2/Panel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -52.5
-offset_top = -20.0
-offset_right = 52.5
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Text" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/Toast Manager"]
+layout_mode = 2
 text = "This is a toast"
 fit_content = true
 scroll_active = false

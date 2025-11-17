@@ -4,48 +4,60 @@ using System;
 public partial class TEMP_DoorOpenWhenHasBlueKey : AreaInteraction {
     [Export] Node3D doorRight;
     [Export] Node3D doorLeft;
-    [Export] RichTextLabel infotext;
+
+    private ItemManager manager = null;
+    private ToastManager toastManager = null;
+    private Toast toast = null;
 
     const string interactAction = "Interact";
-
-    const int looseLookAngle = 30; // degrees.
-    private ItemManager manager = null;
+    const int looseLookAngle = 60; // degrees.
 
     public override void _Ready() {
         base._Ready();
         InteractionInsideEvent += giveCardToPlayer;
-        manager = GetTree().CurrentScene.FindChild("Player Items", true) as ItemManager;
+        manager = GetTree().CurrentScene.FindChild("Player Items", true)
+        as ItemManager;
 
-        playerObserver = GetTree().CurrentScene.FindChild("Camera", true) as Node3D;
+        playerObserver = GetTree().CurrentScene.FindChild("Camera", true)
+        as Node3D;
+
+        toastManager = GetTree().CurrentScene.FindChild("Toast Manager", true)
+        as ToastManager;
+
+        toast = new Toast(toastManager, Toast.LIFETIME.TWO_SECONDS);
     }
 
     protected override void OnEnterArea(Node3D body) {
         base.OnEnterArea(body);
-        infotext.Text = "Press [E] while looking at the door to open it.";
+
+        if(body.GetMeta("PlayerCollider", false).AsBool()) {
+            toast.post("Press [E] while looking at the door to open it.");
+        }
     }
 
     protected override void OnExitArea(Node3D body) {
         base.OnExitArea(body);
-        infotext.Text = "";
+        toast.hide();
     }
 
     private void giveCardToPlayer(Node3D body, InputEvent iEvent) {
         bool looking = IsLookingAt(
-            playerObserver, 
-            (Node3D)GetParent(), 
+            playerObserver,
+            (Node3D)GetParent(),
             looseLookAngle
         );
 
-        if (manager != null 
-            && iEvent.IsActionPressed(interactAction) 
+        if (manager != null
+            && iEvent.IsActionPressed(interactAction)
             && looking
         ) {
-            if (manager.checkBlueKey()) {
-                manager.takeBlueKey();
+            Item blueKey = manager.findByName("Blue Key");
+            if (blueKey.isUnlocked()) {
+                blueKey.setUnlocked(false);
                 if (IsInstanceValid(doorRight)) doorRight.QueueFree();
                 if (IsInstanceValid(doorLeft)) doorLeft.QueueFree();
             } else {
-                infotext.Text = "No blue key.";
+                toast.post("No blue key.");
             }
         }
     }
