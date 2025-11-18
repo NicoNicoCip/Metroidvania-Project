@@ -8,6 +8,6 @@ public partial class ItemDisplay : Node3D {
     public override void _Process(double delta) {
         base._Process(delta);
 
-        blueKey.Visible = manager.checkBlueKey();
+        blueKey.Visible = manager.findByID(0).isUnlocked();
     }
 }

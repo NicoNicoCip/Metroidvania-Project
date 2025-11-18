@@ -1,7 +1,20 @@
-[gd_scene load_steps=12 format=3 uid="uid://007uqjkj05gh"]
+[gd_scene load_steps=25 format=3 uid="uid://007uqjkj05gh"]
 
 [ext_resource type="Script" uid="uid://bowmnmy5jspkx" path="res://src/main/core/motion/PlayerController.cs" id="1_d3pck"]
-[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/player/FollowNode.cs" id="2_8lesa"]
+[ext_resource type="Script" uid="uid://bba7kwv5eyju8" path="res://src/main/core/motion/FollowNode.cs" id="2_8lesa"]
+[ext_resource type="Script" uid="uid://d4lj2y1jhxubl" path="res://src/main/core/player/ItemManager.cs" id="2_d3pck"]
+[ext_resource type="Script" uid="uid://lfjusl802g4o" path="res://src/main/core/player/Item.cs" id="3_65ygi"]
+[ext_resource type="Script" uid="uid://ol4sh35pmc3w" path="res://src/main/core/player/FootstepsEngine.cs" id="3_cn62v"]
+[ext_resource type="AudioStream" uid="uid://cbdd7ty74sa2p" path="res://src/resources/sounds/walk_default.wav" id="4_4ktr0"]
+[ext_resource type="Script" uid="uid://65bei65inuqm" path="res://src/main/core/player/ItemDisplay.cs" id="4_65ygi"]
+[ext_resource type="AudioStream" uid="uid://nysix0thd8pr" path="res://src/resources/sounds/walk_metal.wav" id="5_1no8l"]
+[ext_resource type="Script" uid="uid://jhka5kr41fvj" path="res://src/main/core/world/ToastManager.cs" id="5_d3pck"]
+[ext_resource type="AudioStream" uid="uid://ciso6451ly0sl" path="res://src/resources/sounds/walk_grass.wav" id="6_8lesa"]
+
+[sub_resource type="Resource" id="Resource_65ygi"]
+script = ExtResource("3_65ygi")
+name = "blue key"
+metadata/_custom_type_script = "uid://lfjusl802g4o"
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_7ekwg"]
 size = Vector2(0.17, 0.4)
@@ -9,36 +22,91 @@ size = Vector2(0.17, 0.4)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rmk8t"]
 albedo_color = Color(0.2647876, 0.6126055, 0.8571388, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8lesa"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3pck"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.078431375, 0.101960786, 0.18431373, 0.5137255)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_65ygi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ekwg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.078431375, 0.101960786, 0.18431373, 0.5137255)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
+friction = 0.0
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yc87k"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fre8c"]
 material = SubResource("StandardMaterial3D_yc87k")
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1djsn"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o767q"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_7sf32"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1djsn"]
+size = Vector3(0.6, 0.165, 0.6)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1djsn"]
+radius = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3byqp"]
+radius = 0.2
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_80goq"]
-size = Vector3(1.1, 2.2, 1.12)
-
-[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "crouchCeilingCheck", "bodyCollision", "rigidBody", "groundCast", "slopeCast")]
+[node name="Player" type="Node3D" node_paths=PackedStringArray("fpsLabel", "head", "orientation", "bodyMesh", "bodyCollision", "crouchCeilingCheck", "rigidBody", "groundCast", "slopeCast", "contactCast", "waterDetectionArea")]
 process_mode = 3
 script = ExtResource("1_d3pck")
-fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/Control/Panel Container/Panel/RichTextLabel")
+fpsLabel = NodePath("Motion Controller/ViewportCont/SubViewport/FPS Counter/Text")
+dashForce = 12.0
+jumpForce = 280.0
+crouchScale = 0.6
+crouchSpeed = 4.0
 head = NodePath("Motion Controller/ViewportCont/SubViewport/Head")
 orientation = NodePath("Motion Controller/Rig/Orientation")
-bodyMesh = NodePath("Motion Controller/Rig")
-crouchCeilingCheck = NodePath("Motion Controller/Rig/CrouchBoxcast")
+bodyMesh = NodePath("Motion Controller/Rig/Body/Mesh")
 bodyCollision = NodePath("Motion Controller/Rig/Collider")
+crouchCeilingCheck = NodePath("Motion Controller/Rig/CrouchBoxcast")
+maxSpeed = 6.0
+maxAirSpeed = 10.0
 rigidBody = NodePath("Motion Controller/Rig")
 groundCast = NodePath("Motion Controller/Rig/GroundRaycast")
 slopeCast = NodePath("Motion Controller/Rig/SlopeRaycast")
+contactCast = NodePath("Motion Controller/Rig/ContactSpherecast")
+waterDetectionArea = NodePath("Motion Controller/Rig/WaterBoxcast")
 
 [node name="Player Items" type="Node3D" parent="."]
+script = ExtResource("2_d3pck")
+items = [SubResource("Resource_65ygi")]
 
 [node name="Motion Controller" type="Node3D" parent="."]
 
@@ -66,11 +134,12 @@ render_target_update_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 rotation_order = 0
 script = ExtResource("2_8lesa")
-toFollow = NodePath("../../../Rig/Cam Holder")
+toFollow = NodePath("../../../Rig/Body/Mesh/Cam Holder")
+lerp = 0.8
 
 [node name="CameraHandler" type="Node3D" parent="Motion Controller/ViewportCont/SubViewport/Head"]
 
-[node name="Camera3D" type="Camera3D" parent="Motion Controller/ViewportCont/SubViewport/Head"]
+[node name="Camera" type="Camera3D" parent="Motion Controller/ViewportCont/SubViewport/Head"]
 current = true
 fov = 85.0
 far = 1000.0
@@ -81,7 +150,10 @@ target_position = Vector3(0, 0, 1000)
 debug_shape_custom_color = Color(0.890196, 0.921569, 0, 1)
 debug_shape_thickness = 1
 
-[node name="Item Holder" type="Node3D" parent="Motion Controller/ViewportCont/SubViewport/Head"]
+[node name="Item Holder" type="Node3D" parent="Motion Controller/ViewportCont/SubViewport/Head" node_paths=PackedStringArray("manager", "blueKey")]
+script = ExtResource("4_65ygi")
+manager = NodePath("../../../../../Player Items")
+blueKey = NodePath("TEMP blue card")
 
 [node name="TEMP blue card" type="MeshInstance3D" parent="Motion Controller/ViewportCont/SubViewport/Head/Item Holder"]
 transform = Transform3D(0.873786, -0.46727213, -0.13474011, -0.13532774, 0.032489326, -0.99026805, 0.4671023, 0.8835164, -0.034846168, 0.36, -0.281, -0.374)
@@ -89,50 +161,58 @@ mesh = SubResource("PlaneMesh_7ekwg")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_rmk8t")
 
-[node name="Control" type="Control" parent="Motion Controller/ViewportCont/SubViewport"]
-top_level = true
-clip_contents = true
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel Container" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport/Control"]
+[node name="FPS Counter" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport"]
 custom_minimum_size = Vector2(40, 40)
-layout_mode = 1
 offset_left = 32.0
 offset_top = 32.0
 offset_right = 72.0
 offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8lesa")
 
-[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/Control/Panel Container"]
+[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/FPS Counter"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d3pck")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/Control/Panel Container/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Text" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/FPS Counter"]
+layout_mode = 2
 text = "FPS"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Body" type="Node3D" parent="Motion Controller" node_paths=PackedStringArray("toFollow")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("2_8lesa")
-toFollow = NodePath("../Rig")
+[node name="Toast Manager" type="PanelContainer" parent="Motion Controller/ViewportCont/SubViewport" node_paths=PackedStringArray("textLabel")]
+custom_minimum_size = Vector2(40, 40)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -84.0
+offset_right = 20.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_65ygi")
+script = ExtResource("5_d3pck")
+textLabel = NodePath("Text")
 
-[node name="Mesh" type="MeshInstance3D" parent="Motion Controller/Body"]
-mesh = SubResource("CapsuleMesh_fre8c")
-skeleton = NodePath("../../../..")
+[node name="Panel" type="Panel" parent="Motion Controller/ViewportCont/SubViewport/Toast Manager"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ekwg")
 
-[node name="FootstepsEngine" type="Node3D" parent="Motion Controller/Body"]
-
-[node name="Walk" type="AudioStreamPlayer3D" parent="Motion Controller/Body"]
+[node name="Text" type="RichTextLabel" parent="Motion Controller/ViewportCont/SubViewport/Toast Manager"]
+layout_mode = 2
+text = "This is a toast"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Rig" type="RigidBody3D" parent="Motion Controller"]
 process_mode = 3
@@ -144,35 +224,52 @@ lock_rotation = true
 continuous_cd = true
 metadata/PlayerCollider = true
 
+[node name="Body" type="Node3D" parent="Motion Controller/Rig"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Motion Controller/Rig/Body"]
+mesh = SubResource("CapsuleMesh_fre8c")
+skeleton = NodePath("../../../../..")
+
+[node name="Cam Holder" type="Node3D" parent="Motion Controller/Rig/Body/Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="FootstepsEngine" type="Node3D" parent="Motion Controller/Rig/Body" node_paths=PackedStringArray("motion", "streamPlayer")]
+script = ExtResource("3_cn62v")
+motion = NodePath("../../../..")
+streamPlayer = NodePath("../Stream Player")
+metas = PackedStringArray("default", "iron", "stone")
+stream = Array[AudioStream]([ExtResource("4_4ktr0"), ExtResource("5_1no8l"), ExtResource("6_8lesa")])
+
+[node name="Stream Player" type="AudioStreamPlayer3D" parent="Motion Controller/Rig/Body"]
+
 [node name="Collider" type="CollisionShape3D" parent="Motion Controller/Rig"]
 shape = SubResource("CapsuleShape3D_o767q")
-
-[node name="Cam Holder" type="Node3D" parent="Motion Controller/Rig"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Orientation" type="Node3D" parent="Motion Controller/Rig"]
 
 [node name="GroundRaycast" type="RayCast3D" parent="Motion Controller/Rig"]
-target_position = Vector3(0, -1.1, 0)
+target_position = Vector3(0, -1.2, 0)
 hit_from_inside = true
 debug_shape_custom_color = Color(0.815686, 0.219608, 1, 1)
 
 [node name="SlopeRaycast" type="RayCast3D" parent="Motion Controller/Rig"]
-target_position = Vector3(0, -1.5, 0)
+target_position = Vector3(0, -1.3, 0)
 debug_shape_custom_color = Color(0.972549, 0.372549, 0.286275, 1)
 
 [node name="CrouchBoxcast" type="ShapeCast3D" parent="Motion Controller/Rig"]
-shape = SubResource("SphereShape3D_7sf32")
-target_position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_1djsn")
+target_position = Vector3(0, 0.95, 0)
 debug_shape_custom_color = Color(1, 0.32549, 0.431373, 1)
 
+[node name="ContactSpherecast" type="ShapeCast3D" parent="Motion Controller/Rig"]
+shape = SubResource("SphereShape3D_1djsn")
+target_position = Vector3(0, -0.9, 0)
+collision_mask = 2
+
 [node name="WaterBoxcast" type="Area3D" parent="Motion Controller/Rig"]
-collision_mask = 8
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Motion Controller/Rig/WaterBoxcast"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 0)
 shape = SubResource("SphereShape3D_3byqp")
-
-[node name="ContactCast" type="ShapeCast3D" parent="Motion Controller/Rig"]
-shape = SubResource("BoxShape3D_80goq")
-target_position = Vector3(0, 0, 0)
