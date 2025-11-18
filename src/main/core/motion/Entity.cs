@@ -14,8 +14,8 @@ public abstract partial class Entity : MotionController {
     [Export] protected Node3D head;
     [Export] protected Node3D orientation;
     [Export] protected Node3D bodyMesh;
-    [Export] protected ShapeCast3D crouchCeilingCheck;
     [Export] protected CollisionShape3D bodyCollision;
+    [Export] protected ShapeCast3D crouchCeilingCheck;
     #endregion
 
     #region State
@@ -28,6 +28,7 @@ public abstract partial class Entity : MotionController {
     protected bool isCrouching;
     protected bool wantsToUncrouch;
     protected float originalBodyScaleY;
+    protected float originalShapeScaleY;
     protected float originalMaxSpeed;
     protected bool canJump => timeSinceGrounded < coyoteTime;
     public bool readyFlag { get; private set; }
@@ -38,6 +39,10 @@ public abstract partial class Entity : MotionController {
 
         if (bodyMesh != null) {
             originalBodyScaleY = bodyMesh.Scale.Y;
+        }
+
+        if (bodyMesh != null) {
+            originalShapeScaleY = bodyCollision.Shape.Get("height").As<float>();
         }
         originalMaxSpeed = maxSpeed;
 
@@ -51,9 +56,9 @@ public abstract partial class Entity : MotionController {
         const float SENSITIVITY_MODIFIER = 0.001f;
         const float MAX_VERTICAL_ANGLE = 1.45f;
 
-        cameraXRot -= mouseMotion.Relative.Y * SENSITIVITY_MODIFIER * 
+        cameraXRot -= mouseMotion.Relative.Y * SENSITIVITY_MODIFIER *
                     rotationSensitivity;
-        cameraYRot -= mouseMotion.Relative.X * SENSITIVITY_MODIFIER * 
+        cameraYRot -= mouseMotion.Relative.X * SENSITIVITY_MODIFIER *
                     rotationSensitivity;
 
         cameraXRot = Mathf.Clamp(cameraXRot, -MAX_VERTICAL_ANGLE, MAX_VERTICAL_ANGLE);
@@ -104,9 +109,14 @@ public abstract partial class Entity : MotionController {
     }
 
     private void HandleJumpInput() {
+        // have crouch override.
+        if (tensors.Y < 0) {
+            return;
+        }
+
         // Underwater jumping
         if (inWater && tensors.Y > 0) {
-            ApplyForce(rigidBody.Basis.Y * jumpForce * 1.5f);
+            ApplyForce(rigidBody.Basis.Y * jumpForce * 0.1f);
             return;
         }
 
@@ -131,16 +141,16 @@ public abstract partial class Entity : MotionController {
         ApplyForce(Vector3.Up * jumpForce);
         wantsToJump = false;
 
-        if(timeSinceGrounded == 0)
+        if (timeSinceGrounded == 0)
             wantsToJump = true;
-        
+
         timeSinceGrounded = coyoteTime;
     }
     #endregion
 
     #region Crouch System
     private void HandleCrouchInput() {
-        if (tensors.Y < 0 && !isCrouching) {
+        if (tensors.Y < 0) {
             StartCrouch();
         }
 
@@ -154,37 +164,61 @@ public abstract partial class Entity : MotionController {
 
         // Crouch swimming (move down in water)
         if (isCrouching && inWater) {
-            ApplyForce(-rigidBody.Basis.Y * jumpForce);
+            ApplyForce(-rigidBody.Basis.Y * jumpForce * 0.1f);
         }
     }
 
     private void StartCrouch() {
         if (bodyMesh == null || bodyCollision == null) return;
-
         isCrouching = true;
-        bodyMesh.Scale = new Vector3(bodyMesh.Scale.X, crouchScale, bodyMesh.Scale.Z);
-        bodyCollision.Scale = bodyMesh.Scale;
+
+        if (grounded) {
+            bodyMesh.Scale = new Vector3(
+                bodyMesh.Scale.X,
+                crouchScale,
+                bodyMesh.Scale.Z
+            );
+            bodyCollision.Shape.Set(
+                "height",
+                originalShapeScaleY * crouchScale
+            );
+        }
+
         maxSpeed = crouchSpeed;
+
+        if (grounded && !inWater) {
+            ApplyForce(-rigidBody.Basis.Y * jumpForce);
+        }
     }
 
     private void StopCrouch() {
+
         if (bodyMesh == null || bodyCollision == null) return;
 
         isCrouching = false;
         wantsToUncrouch = false;
-        bodyMesh.Scale = new Vector3(bodyMesh.Scale.X, originalBodyScaleY, bodyMesh.Scale.Z);
-        bodyCollision.Scale = bodyMesh.Scale;
-        maxSpeed = originalMaxSpeed;
 
-        // Push player down slightly to prevent floating
-        if (grounded) {
-            ApplyForce(Vector3.Down * jumpForce * 2);
-        }
+        bodyMesh.Scale = new Vector3(
+            bodyMesh.Scale.X,
+            originalBodyScaleY,
+            bodyMesh.Scale.Z
+        );
+        bodyCollision.Shape.Set(
+            "height",
+            originalShapeScaleY
+        );
+        maxSpeed = originalMaxSpeed;
     }
 
     private bool CanUncrouch() {
         if (crouchCeilingCheck == null) return true;
         return !crouchCeilingCheck.IsColliding();
+    }
+    #endregion
+
+    #region Getters
+    public Vector3 getTensors() {
+        return tensors;
     }
     #endregion
 }

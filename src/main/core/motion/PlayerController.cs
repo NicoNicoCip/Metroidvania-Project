@@ -16,7 +16,7 @@ public partial class PlayerController : Entity {
     private const string INPUT_JUMP = "Jump";
     private const string INPUT_CROUCH = "Crouch";
     private const string INPUT_DEBUG_TP = "Debug TP Button";
-    private const string INPUT_DEBUG_DASH = "Shift";
+    private const string INPUT_DASH = "Shift";
     #endregion
 
     protected override void OnReady() {
@@ -27,11 +27,15 @@ public partial class PlayerController : Entity {
     private void Debug(Vector3 wishDir) {
         string debutOut = "";
 
-        debutOut += "Position: " + rigidBody.GlobalPosition.ToString() + "\n";
-        debutOut += "Vector: " + rigidBody.LinearVelocity.ToString() + "\n";
-        debutOut += "Wants To jump: " + wantsToJump + "\n";
-        debutOut += "Can To jump: " + canJump + "\n";
-        debutOut += "Wish dir: " + wishDir + "\n";
+        // debutOut += "Position: " + rigidBody.GlobalPosition.ToString() + "\n";
+        // debutOut += "Vector: " + rigidBody.LinearVelocity.ToString() + "\n";
+        // debutOut += "Wants To jump: " + wantsToJump + "\n";
+        // debutOut += "Can To jump: " + canJump + "\n";
+        // debutOut += "Wish dir: " + wishDir + "\n";
+
+        // debutOut += "Dash Delay: " + timeSinceLastDash + "\n";
+        // debutOut += "Grounded: " + grounded + "\n";
+        // debutOut += "Can dash: " + canDash + "\n";
 
         GD.Print(debutOut + new string('=', 16));
     }
@@ -55,9 +59,13 @@ public partial class PlayerController : Entity {
             INPUT_MOVE_RIGHT
         );
 
-        float verticalMap =
-        (Input.IsActionPressed(INPUT_JUMP) ? 1.0f : 0.0f) -
-        (Input.IsActionPressed(INPUT_CROUCH) ? 2.0f : 0.0f);
+
+        float verticalMap = 0.0f;
+        
+        if (Input.IsActionPressed(INPUT_CROUCH))
+            verticalMap = -1.0f;
+        else if (Input.IsActionPressed(INPUT_JUMP))
+            verticalMap = 1.0f;
 
         tensors = new Vector3(inputMap.X, verticalMap, inputMap.Y);
     }
@@ -94,21 +102,33 @@ public partial class PlayerController : Entity {
     }
 
     private bool canDash = true;
+    private int dashDefaultDelay = 400;//ms
+    private float timeSinceLastDash = 0.0f; 
 
     private void UseDash(Vector3 wishDir) {
         
-        if (Input.IsActionJustPressed(INPUT_DEBUG_DASH) 
+        if (Input.IsActionJustPressed(INPUT_DASH) 
             && !grounded && canDash) {
             canDash = false;
+            timeSinceLastDash = dashDefaultDelay;
+
+            Vector3 dashDir = wishDir.Length() > 0.01f 
+                ? wishDir.Normalized() 
+                : -orientation.Transform.Basis.Z;
             
-            Vector3 dashDir = wishDir.Length() > 0.01f ? wishDir.Normalized() 
-            : -orientation.Transform.Basis.Z;
-            
+            if(inWater) {
+                ignoreDragThisFrame = true;
+            }
             ApplyImpulse(dashDir * dashForce);
         }
 
-        if (!canDash && grounded) {
+        if (!canDash && (grounded || timeSinceLastDash <= 0)) {
             canDash = true;
+            timeSinceLastDash = 0.0f;
+        }
+
+        if(timeSinceLastDash > 0) {
+            timeSinceLastDash -= delta * 1000;
         }
     }
     #endregion

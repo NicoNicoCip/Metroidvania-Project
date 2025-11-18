@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dr43gqxv31dkw"]
+
+[ext_resource type="Texture2D" uid="uid://cck471isyn256" path="res://trenchbroom/textures/halflife/-0out_wall8.png" id="1_j7m2c"]
+
+[resource]
+albedo_texture = ExtResource("1_j7m2c")
+metallic_specular = 0.0
+texture_filter = 2

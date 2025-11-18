@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://cs1twbe1g0vkx"
+path="res://.godot/imported/FirstRoom.2.map-e7cea3e68e6941e217e2bb6e11c44e2f.tres"
+
+[deps]
+
+source_file="res://Maps/autosave/FirstRoom.2.map"
+dest_files=["res://.godot/imported/FirstRoom.2.map-e7cea3e68e6941e217e2bb6e11c44e2f.tres"]
+
+[params]
+

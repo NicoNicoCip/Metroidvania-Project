@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Metroidvania"
-run/main_scene="uid://c26av2fiq20t4"
+run/main_scene="uid://btlfd4c2epwoj"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="uid://dukxccvsmgrmv"
 
@@ -28,7 +28,6 @@ window/size/window_width_override=768
 window/size/window_height_override=691
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
-window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -36,7 +35,7 @@ project/assembly_name="Metroidvania"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/tbloader/plugin.cfg")
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 
 [input]
 
@@ -99,15 +98,13 @@ Shift={
 [physics]
 
 3d/run_on_separate_thread=true
-3d/physics_engine="GodotPhysics3D"
-jolt_physics_3d/simulation/position_steps=4
 
 [rendering]
 
 lights_and_shadows/directional_shadow/size=2048
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=1
 lights_and_shadows/positional_shadow/soft_shadow_filter_quality=1
+shading/overrides/force_vertex_shading=true
 scaling_3d/scale=0.75
-scaling_3d/fsr_sharpness=0.2
 limits/opengl/max_renderable_lights=8
 lights_and_shadows/positional_shadow/atlas_size=2048
