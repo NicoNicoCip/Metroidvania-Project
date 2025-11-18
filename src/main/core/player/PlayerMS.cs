@@ -30,7 +30,7 @@ public partial class PlayerMS : GlobalMS {
 		base._PhysicsProcess(delta);
 
 		fpsLabel.Text = Engine.GetFramesPerSecond().ToString();
-
+        
 		phy_Grounded();
 		inputDir = Input.GetVector(
 			moveBackwardsInput,
