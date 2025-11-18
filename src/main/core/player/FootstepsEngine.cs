@@ -41,7 +41,7 @@ public partial class FootstepsEngine : Node3D {
 
     void fun_jump() {
         if (prevGroundCheck != motionGroundCheck && motion.getTensors().Y > 0) {
-            streamPlayer.PitchScale = rng.RandfRange(0.9f, 1.1f) 
+            streamPlayer.PitchScale = rng.RandfRange(0.9f, 1.1f)
                 + motion.getRigidBody().LinearVelocity.Length() * .01f;
             _ = snd_streamPlayer();
         }
@@ -85,16 +85,16 @@ public partial class FootstepsEngine : Node3D {
         }
 
         if (sound == null) {
-            GD.PushError("Could not find the sound meta tag on " 
+            GD.PushError("Could not find the sound meta tag on "
             + motion.getGroundCast().GetCollider());
             return;
         }
-        
+
         AudioStream audiostream = stream[0];
         for (int i = 1; i < metas.Length; i++) {
-            if(sound == metas[i]) {
+            if (sound == metas[i]) {
                 audiostream = stream[i];
-                
+
                 break;
             }
         }

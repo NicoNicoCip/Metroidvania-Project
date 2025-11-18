@@ -65,9 +65,9 @@ public partial class AreaInteraction : Area3D {
         OnExitArea(body);
     }
 
-    protected virtual void OnEnterArea(Node3D body) {}
+    protected virtual void OnEnterArea(Node3D body) { }
 
-    protected virtual void OnExitArea(Node3D body) {}
+    protected virtual void OnExitArea(Node3D body) { }
 
     public override void _UnhandledKeyInput(InputEvent @event) {
         base._UnhandledKeyInput(@event);

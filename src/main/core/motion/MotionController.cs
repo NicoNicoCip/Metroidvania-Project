@@ -113,7 +113,7 @@ public abstract partial class MotionController : Node3D {
         Vector3 wishDir = GetWishDirection();
 
         OnPhysicsUpdate(wishDir);
-        
+
         ApplyModifications();
         ApplyDrag();
         ApplyMovement(wishDir);
@@ -248,7 +248,7 @@ public abstract partial class MotionController : Node3D {
     }
 
     private void ApplyModifications() {
-        
+
     }
     #endregion
 
@@ -298,14 +298,14 @@ public abstract partial class MotionController : Node3D {
     private void HandleMovingBodies() {
         if (contactCast == null) return;
         Node3D contactCollider = null;
-        if(contactCast.IsColliding()) 
+        if (contactCast.IsColliding())
             contactCollider = (Node3D)contactCast.GetCollider(0);
 
         if (contactCollider != null) {
             if (contactCast.IsColliding() && GetParent() == initialParent) {
                 CallDeferred(nameof(DeferredReparent), contactCollider);
             } else if (contactCast.IsColliding()
-            && contactCollider != GetParent()) {
+              && contactCollider != GetParent()) {
                 CallDeferred(nameof(DeferredReparent), initialParent);
             }
         }
