@@ -24,7 +24,7 @@ public partial class ItemManager : Node3D {
     /// </returns>
     public Item findByName(string name) {
         for (int i = 0; i < items.Length; i++) {
-            if(items[i].getName().ToLower().Equals(name.ToLower())) {
+            if (items[i].getName().ToLower().Equals(name.ToLower())) {
                 return items[i];
             }
         }

@@ -61,7 +61,7 @@ public partial class PlayerController : Entity {
 
 
         float verticalMap = 0.0f;
-        
+
         if (Input.IsActionPressed(INPUT_CROUCH))
             verticalMap = -1.0f;
         else if (Input.IsActionPressed(INPUT_JUMP))
@@ -103,20 +103,20 @@ public partial class PlayerController : Entity {
 
     private bool canDash = true;
     private int dashDefaultDelay = 400;//ms
-    private float timeSinceLastDash = 0.0f; 
+    private float timeSinceLastDash = 0.0f;
 
     private void UseDash(Vector3 wishDir) {
-        
-        if (Input.IsActionJustPressed(INPUT_DASH) 
+
+        if (Input.IsActionJustPressed(INPUT_DASH)
             && !grounded && canDash) {
             canDash = false;
             timeSinceLastDash = dashDefaultDelay;
 
-            Vector3 dashDir = wishDir.Length() > 0.01f 
-                ? wishDir.Normalized() 
+            Vector3 dashDir = wishDir.Length() > 0.01f
+                ? wishDir.Normalized()
                 : -orientation.Transform.Basis.Z;
-            
-            if(inWater) {
+
+            if (inWater) {
                 ignoreDragThisFrame = true;
             }
             ApplyImpulse(dashDir * dashForce);
@@ -127,7 +127,7 @@ public partial class PlayerController : Entity {
             timeSinceLastDash = 0.0f;
         }
 
-        if(timeSinceLastDash > 0) {
+        if (timeSinceLastDash > 0) {
             timeSinceLastDash -= delta * 1000;
         }
     }

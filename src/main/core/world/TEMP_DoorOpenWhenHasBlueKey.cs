@@ -30,7 +30,7 @@ public partial class TEMP_DoorOpenWhenHasBlueKey : AreaInteraction {
     protected override void OnEnterArea(Node3D body) {
         base.OnEnterArea(body);
 
-        if(body.GetMeta("PlayerCollider", false).AsBool()) {
+        if (body.GetMeta("PlayerCollider", false).AsBool()) {
             toast.post("Press [E] while looking at the door to open it.");
         }
     }

@@ -14,15 +14,15 @@ public partial class ToastManager : Control {
     public override void _Process(double delta) {
         base._Process(delta);
 
-        if(lifeLeft == -25) {
+        if (lifeLeft == -25) {
             return;
         }
 
-        if(lifeLeft > 0) {
+        if (lifeLeft > 0) {
             lifeLeft -= (float)delta * 1000;
         }
 
-        if(lifeLeft <= 0) {
+        if (lifeLeft <= 0) {
             lifeLeft = 0;
             Visible = false;
         }

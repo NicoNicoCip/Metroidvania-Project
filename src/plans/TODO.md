@@ -4,7 +4,7 @@
 	[ ] 2. Document all the code
 	[ ] 3. Fix the scene tree
 	[X] 4. Fix sound crackling
-	[ ] 4. Fix animated platforms not moving the player as well.
+	[X] 4. Fix animated platforms not moving the player as well.
 	[x] 5. Fix region system using Node3D instead of FUCKING RegionDada. FUUUUCK.
 
 ## [ ] SECTION 1 ##
